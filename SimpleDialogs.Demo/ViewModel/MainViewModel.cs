@@ -4,6 +4,7 @@ using SimpleDialogs.Controls;
 using SimpleDialogs.Demo.Enumerators;
 using SimpleDialogs.Enumerators;
 using System;
+using System.Diagnostics;
 using System.Timers;
 
 namespace SimpleDialogs.Demo.ViewModel
@@ -12,11 +13,17 @@ namespace SimpleDialogs.Demo.ViewModel
     {
         public RelayCommand<DialogStyle> ShowDialogCommand { get; private set; }
         public RelayCommand<DialogResult> DialogCloseCommand { get; private set; }
+        public RelayCommand<Uri> OpenLinkCommand { get; private set; }
 
         public DialogResult? DialogResult { get; private set; }
 
         public MainViewModel()
         {
+            OpenLinkCommand = new RelayCommand<Uri>((uri) =>
+            {
+                Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
+            });
+
             DialogCloseCommand = new RelayCommand<DialogResult>((result) =>
             {
                 DialogResult = result;

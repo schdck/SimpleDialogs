@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:enums="clr-namespace:SimpleDialogs.Demo.Enumerators"
         xmlns:dialogs="clr-namespace:SimpleDialogs;assembly=SimpleDialogs"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         dialogs:DialogManager.DefaultDialogContainer="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="DEMO - SimpleDialogs"
         Height="400"
         Width="800"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
@@ -21,7 +22,7 @@
         <WrapPanel Orientation="Horizontal"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"
-                   Margin="10">
+                   Margin="30">
             <WrapPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Margin"
@@ -56,5 +57,26 @@
                     Command="{Binding ShowDialogCommand}"
                     CommandParameter="{x:Static enums:DialogStyle.ExceptionDialog}" />
         </WrapPanel>
+
+        <StackPanel VerticalAlignment="Bottom"
+                    HorizontalAlignment="Center"
+                    Margin="5"
+                    Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Bottom"
+                       HorizontalAlignment="Center"
+                       Text="Sourcecode avaliable at " />
+
+            <TextBlock VerticalAlignment="Bottom">
+            <Hyperlink x:Name="Hyperlink"
+                       NavigateUri="https://github.com/schdck/SimpleDialogs">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="RequestNavigate">
+                        <i:InvokeCommandAction Command="{Binding OpenLinkCommand}" CommandParameter="{Binding ElementName=Hyperlink, Path=NavigateUri}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                github.com/schdck/SimpleDialogs
+            </Hyperlink>
+            </TextBlock>
+        </StackPanel>
     </Grid>
 </Window>
