@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:controls="clr-namespace:SimpleDialogs.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="AlertDialog.xaml" />
+        <ResourceDictionary Source="ProgressDialog.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

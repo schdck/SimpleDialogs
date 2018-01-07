@@ -1,0 +1,60 @@
+﻿<Window x:Class="SimpleDialogs.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:enums="clr-namespace:SimpleDialogs.Demo.Enumerators"
+        xmlns:dialogs="clr-namespace:SimpleDialogs;assembly=SimpleDialogs"
+        dialogs:DialogManager.DefaultDialogContainer="{Binding RelativeSource={RelativeSource Self}}"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="400"
+        Width="800"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <Grid>
+        <TextBlock Text="{Binding DialogResult, StringFormat='Dialog result: {0}'}"
+                   VerticalAlignment="Top"
+                   Margin="10"
+                   HorizontalAlignment="Center"
+                   FontSize="24" />
+
+        <WrapPanel Orientation="Horizontal"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Margin="10">
+            <WrapPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin"
+                            Value="3" />
+                    <Setter Property="Width"
+                            Value="160" />
+                </Style>
+            </WrapPanel.Resources>
+
+            <Button Content="Progress (defined)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.DefinedProgressDialog}" />
+            <Button Content="Progress (undefined)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.UndefinedProgressDialog}" />
+            <Button Content="Alert (information)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.InformationDialog}" />
+            <Button Content="Alert (success)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.SuccessDialog}" />
+            <Button Content="Alert (warning)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.WarningDialog}" />
+            <Button Content="Alert (error)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.ErrorDialog}" />
+            <Button Content="Alert (critical)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.CriticalDialog}" />
+            <Button Content="Alert (with exception)"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.ExceptionDialog}" />
+        </WrapPanel>
+    </Grid>
+</Window>
