@@ -15,12 +15,12 @@ namespace SimpleDialogs.Controls
             set => SetValue(ExitDialogCommandProperty, value);
         }
 
-        public static DependencyProperty OkButtonTextProperty = DependencyProperty.Register(nameof(OkButtonText), typeof(string), typeof(BaseDialog), new PropertyMetadata("OK"));
+        public static DependencyProperty OkButtonContentProperty = DependencyProperty.Register(nameof(OkButtonContent), typeof(object), typeof(BaseDialog), new PropertyMetadata("OK"));
 
-        public string OkButtonText
+        public object OkButtonContent
         {
-            get => (string)GetValue(OkButtonTextProperty);
-            set => SetValue(OkButtonTextProperty, value);
+            get => GetValue(OkButtonContentProperty);
+            set => SetValue(OkButtonContentProperty, value);
         }
 
         public static DependencyProperty ShowOverlayProperty = DependencyProperty.Register(nameof(ShowOverlay), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));

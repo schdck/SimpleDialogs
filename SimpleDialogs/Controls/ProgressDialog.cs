@@ -12,12 +12,12 @@ namespace SimpleDialogs.Controls
             set => SetValue(TitleWhenFinishedProperty, value);
         }
 
-        public static DependencyProperty CancelButtonTextProperty = DependencyProperty.Register(nameof(CancelButtonText), typeof(string), typeof(ProgressDialog), new PropertyMetadata("CANCEL"));
+        public static DependencyProperty CancelButtonContentProperty = DependencyProperty.Register(nameof(CancelButtonContent), typeof(object), typeof(ProgressDialog), new PropertyMetadata("CANCEL"));
 
-        public string CancelButtonText
+        public object CancelButtonContent
         {
-            get => (string)GetValue(CancelButtonTextProperty);
-            set => SetValue(CancelButtonTextProperty, value);
+            get => GetValue(CancelButtonContentProperty);
+            set => SetValue(CancelButtonContentProperty, value);
         }
 
         public static DependencyProperty CanCancelProperty = DependencyProperty.Register(nameof(CanCancel), typeof(bool), typeof(ProgressDialog));

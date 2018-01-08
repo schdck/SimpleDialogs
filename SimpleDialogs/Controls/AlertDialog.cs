@@ -32,28 +32,28 @@ namespace SimpleDialogs.Controls
             set => SetValue(ShowCopyToClipboardButtonProperty, value);
         }
 
-        public static DependencyProperty NoButtonTextProperty = DependencyProperty.Register(nameof(NoButtonText), typeof(string), typeof(AlertDialog), new PropertyMetadata("NO"));
+        public static DependencyProperty NoButtonContentProperty = DependencyProperty.Register(nameof(NoButtonContent), typeof(object), typeof(AlertDialog), new PropertyMetadata("NO"));
 
-        public string NoButtonText
+        public object NoButtonContent
         {
-            get => (string)GetValue(NoButtonTextProperty);
-            set => SetValue(NoButtonTextProperty, value);
+            get => GetValue(NoButtonContentProperty);
+            set => SetValue(NoButtonContentProperty, value);
         }
 
-        public static DependencyProperty YesButtonTextProperty = DependencyProperty.Register(nameof(YesButtonText), typeof(string), typeof(AlertDialog), new PropertyMetadata("YES"));
+        public static DependencyProperty YesButtonContentProperty = DependencyProperty.Register(nameof(YesButtonContent), typeof(object), typeof(AlertDialog), new PropertyMetadata("YES"));
 
-        public string YesButtonText
+        public object YesButtonContent
         {
-            get => (string)GetValue(YesButtonTextProperty);
-            set => SetValue(YesButtonTextProperty, value);
+            get => GetValue(YesButtonContentProperty);
+            set => SetValue(YesButtonContentProperty, value);
         }
 
-        public static DependencyProperty CopyToClipboardButtonTextProperty = DependencyProperty.Register(nameof(CopyToClipboardButtonText), typeof(string), typeof(AlertDialog), new PropertyMetadata("Copy details to clipboard"));
+        public static DependencyProperty CopyToClipboardButtonContentProperty = DependencyProperty.Register(nameof(CopyToClipboardButtonContent), typeof(object), typeof(AlertDialog), new PropertyMetadata("Copy details to clipboard"));
 
-        public string CopyToClipboardButtonText
+        public object CopyToClipboardButtonContent
         {
-            get => (string)GetValue(CopyToClipboardButtonTextProperty);
-            set => SetValue(CopyToClipboardButtonTextProperty, value);
+            get => GetValue(CopyToClipboardButtonContentProperty);
+            set => SetValue(CopyToClipboardButtonContentProperty, value);
         }
 
         

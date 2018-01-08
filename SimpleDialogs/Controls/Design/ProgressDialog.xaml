@@ -99,7 +99,7 @@
                                             <Style TargetType="Button"
                                                    BasedOn="{StaticResource ColoredSquareButtonStyle}">
                                                 <Setter Property="Content"
-                                                        Value="{Binding CancelButtonText, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        Value="{Binding CancelButtonContent, RelativeSource={RelativeSource TemplatedParent}}" />
 
                                                 <Setter Property="IsEnabled"
                                                         Value="{Binding CanCancel, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -111,7 +111,7 @@
                                                     <DataTrigger Binding="{Binding Progress, RelativeSource={RelativeSource TemplatedParent}}"
                                                                  Value="100">
                                                         <Setter Property="Content"
-                                                                Value="{Binding OkButtonText, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                                Value="{Binding OkButtonContent, RelativeSource={RelativeSource TemplatedParent}}" />
 
                                                         <Setter Property="IsEnabled"
                                                                 Value="True" />

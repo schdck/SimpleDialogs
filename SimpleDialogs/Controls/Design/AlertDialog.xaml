@@ -51,7 +51,7 @@
                                         <Button Style="{StaticResource SquareButtonStyle}"
                                                 Visibility="{TemplateBinding ShowCopyToClipboardButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                 Command="{Binding CopyToClipboardCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Content="{TemplateBinding CopyToClipboardButtonText}"
+                                                Content="{TemplateBinding CopyToClipboardButtonContent}"
                                                 Width="150" />
 
                                         <Grid Margin="5 0">
@@ -73,14 +73,14 @@
 
                                                 <Button Style="{StaticResource ColoredSquareButtonStyle}"
                                                         Width="120"
-                                                        Content="{TemplateBinding YesButtonText}"
+                                                        Content="{TemplateBinding YesButtonContent}"
                                                         Command="{TemplateBinding ExitDialogCommand}"
                                                         CommandParameter="{x:Static enums:DialogResult.Yes}" />
 
                                                 <Button Style="{StaticResource SquareButtonStyle}"
                                                         Width="120"
                                                         Margin="5 0 0 0"
-                                                        Content="{TemplateBinding NoButtonText}"
+                                                        Content="{TemplateBinding NoButtonContent}"
                                                         Command="{TemplateBinding ExitDialogCommand}"
                                                         CommandParameter="{x:Static enums:DialogResult.No}" />
                                             </StackPanel>
@@ -102,7 +102,7 @@
                                                 </StackPanel.Style>
 
                                                 <Button Width="120"
-                                                        Content="{TemplateBinding OkButtonText}"
+                                                        Content="{TemplateBinding OkButtonContent}"
                                                         Style="{StaticResource ColoredSquareButtonStyle}"
                                                         Command="{TemplateBinding ExitDialogCommand}"
                                                         CommandParameter="{x:Static enums:DialogResult.Ok}" />
