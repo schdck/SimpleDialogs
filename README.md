@@ -10,6 +10,8 @@
 <hr>
   
 ## :bulb: About the project
+I made this project to make my life easier when displaying messages to the user and for study purposes. Any help, tips, suggestions or critics are really appreciated.
+
 This project was heavily inspired/based on [Mahapps.Metro](https://github.com/MahApps/MahApps.Metro) (and its dialogs) and on [Mahapps.Metro.SimpleChildWindow](https://github.com/punker76/MahApps.Metro.SimpleChildWindow), so a special thanks to [@punker76](https://github.com/punker76) and all the other maintainers/contributors.
   
 ## :rocket: Getting started
@@ -30,7 +32,7 @@ Then just add the following `Resource Dictionary`
   
 ... to your application resources and you are good to go!
   
-**Also take a look at our :dart: [Quick start](https://github.com/schdck/SimpleDialogs/wiki/Quick-start) and at the :books: [Documentation](https://github.com/schdck/SimpleDialogs/wiki)**
+**Also take a look at our :dart: [Quick start](https://github.com/schdck/SimpleDialogs/wiki/Quick-start) and at the :books: [Wiki](https://github.com/schdck/SimpleDialogs/wiki)**
 
 ## :camera: Screenshots
   
