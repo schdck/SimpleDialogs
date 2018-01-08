@@ -32,25 +32,22 @@ Then just add the following `Resource Dictionary`
   
 **Also take a look at our :dart: [Quick start](https://github.com/schdck/SimpleDialogs/wiki/Quick-start) and at the :books: [Documentation](https://github.com/schdck/SimpleDialogs/wiki)**
 
-<div align="center">
+## :camera: Screenshots
   
-  ## :camera: Screenshots
+#### Progress dialogs
+![](https://i.imgur.com/R9BLTfo.gif)
   
-  #### Progress dialogs
-  ![](https://i.imgur.com/R9BLTfo.gif)
-  
-  #### Information dialog
-  ![](https://i.imgur.com/plOvEVp.png")
+#### Information dialog
+![](https://i.imgur.com/plOvEVp.png")
  
-  #### Success dialog
-  ![](https://i.imgur.com/uFWmZNi.png")
+#### Success dialog
+![](https://i.imgur.com/uFWmZNi.png")
   
-  #### Warning dialog
-  ![](https://i.imgur.com/8G4zNoR.png")
+#### Warning dialog
+![](https://i.imgur.com/8G4zNoR.png")
   
-  #### Error dialog
-  ![](https://i.imgur.com/IC6jEvr.png")
+#### Error dialog
+![](https://i.imgur.com/IC6jEvr.png")
   
-  #### Critical error dialog
-  ![](https://i.imgur.com/fqnbnu9.png")
-</div>
+#### Critical error dialog
+![](https://i.imgur.com/fqnbnu9.png")
