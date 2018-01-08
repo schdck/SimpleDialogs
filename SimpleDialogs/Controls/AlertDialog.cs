@@ -48,6 +48,16 @@ namespace SimpleDialogs.Controls
             set => SetValue(YesButtonTextProperty, value);
         }
 
+        public static DependencyProperty CopyToClipboardButtonTextProperty = DependencyProperty.Register(nameof(CopyToClipboardButtonText), typeof(string), typeof(AlertDialog), new PropertyMetadata("Copy details to clipboard"));
+
+        public string CopyToClipboardButtonText
+        {
+            get => (string)GetValue(CopyToClipboardButtonTextProperty);
+            set => SetValue(CopyToClipboardButtonTextProperty, value);
+        }
+
+        
+
         public static DependencyProperty ExceptionProperty = DependencyProperty.Register(nameof(Exception), typeof(Exception), typeof(AlertDialog));
 
         public Exception Exception

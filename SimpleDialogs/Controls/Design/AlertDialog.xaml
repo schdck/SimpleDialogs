@@ -51,7 +51,7 @@
                                         <Button Style="{StaticResource SquareButtonStyle}"
                                                 Visibility="{TemplateBinding ShowCopyToClipboardButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                 Command="{Binding CopyToClipboardCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Content="Copy details to clipboard"
+                                                Content="{TemplateBinding CopyToClipboardButtonText}"
                                                 Width="150" />
 
                                         <Grid Margin="5 0">
