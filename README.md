@@ -10,7 +10,7 @@
 <hr>
   
 ## :bulb: About the project
-I made this project to make my life easier when displaying messages to the user and for study purposes. Any help, tips, suggestions or critics are really appreciated.
+I made this project to make my life easier when displaying messages to the user, since it was something that I saw myself implementing over and over again. Also, I used it to practice a few new concepts that I was studying. It is far from perefct, and any help, tips, suggestions or critics are really appreciated.
 
 This project was heavily inspired/based on [Mahapps.Metro](https://github.com/MahApps/MahApps.Metro) (and its dialogs) and on [Mahapps.Metro.SimpleChildWindow](https://github.com/punker76/MahApps.Metro.SimpleChildWindow), so a special thanks to [@punker76](https://github.com/punker76) and all the other maintainers/contributors.
   
