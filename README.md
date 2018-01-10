@@ -4,6 +4,13 @@
 
   # SimpleDialogs
   
+  [![license](https://img.shields.io/github/license/schdck/SimpleDialogs.svg)](https://github.com/schdck/SimpleDialogs/blob/master/LICENSE)
+  [![NuGet](https://img.shields.io/nuget/v/SimpleDialogs.svg)](https://www.nuget.org/packages/SimpleDialogs/)
+  [![NuGet](https://img.shields.io/nuget/dt/SimpleDialogs.svg)](https://www.nuget.org/packages/SimpleDialogs/)
+  [![GitHub issues](https://img.shields.io/github/issues/schdck/SimpleDialogs.svg)](https://github.com/schdck/SimpleDialogs/issues)
+  
+ 
+  
   :speech_balloon: SimpleDialogs is a simple framework to help displaying dialogs on a WPF app
 </div>
 
