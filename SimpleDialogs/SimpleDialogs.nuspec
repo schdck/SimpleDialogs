@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <title>$title$</title>
     <authors>Maurício Schmaedeck</authors>
     <owners>Maurício Schmaedeck</owners>
@@ -11,7 +11,6 @@
     <iconUrl>https://github.com/schdck/SimpleDialogs/blob/master/logo.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A simple framework to help displaying dialogs on a WPF app.</description>
-    <releaseNotes>Release v1.0.2</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>application app wpf ui xaml dialog dialogs message messages windows</tags>
   </metadata>
