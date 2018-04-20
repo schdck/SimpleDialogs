@@ -145,24 +145,18 @@ namespace SimpleDialogs.Demo.ViewModel
                             break;
 
                         case DialogStyle.ExceptionDialog:
-                            try
+                            Exception e = new Exception("This is some exception", new Exception("And this is its inner exception"));
+
+                            myDialog = new AlertDialog()
                             {
-                                string s = null;
-                                s.IndexOf('s');
-                            }
-                            catch (Exception e)
-                            {
-                                myDialog = new AlertDialog()
-                                {
-                                    AlertLevel = AlertLevel.Warning,
-                                    ButtonsStyle = DialogButtonStyle.Ok,
-                                    ExitDialogCommand = DialogCloseCommand,
-                                    ShowCopyToClipboardButton = true,
-                                    Exception = e,
-                                    Message = "Some exception was caught. The details are contained in the clipboard after 'CopyToClipboard' button is clicked.",
-                                    Title = "Exception ocurred"
-                                };
-                            }
+                                AlertLevel = AlertLevel.Warning,
+                                ButtonsStyle = DialogButtonStyle.Ok,
+                                ExitDialogCommand = DialogCloseCommand,
+                                ShowCopyToClipboardButton = true,
+                                Exception = e,
+                                Message = "Some exception was caught. The details are contained in the clipboard after 'CopyToClipboard' button is clicked.",
+                                Title = "Exception ocurred"
+                            };
 
                             break;
                     }
