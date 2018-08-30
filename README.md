@@ -1,6 +1,6 @@
 <div align="center">
   
-  [<img src="https://github.com/schdck/SimpleDialogs/blob/master/logo.png?raw=true">](https://github.com/schdck/SimpleDialogs)
+  [<img src="https://github.com/schdck/SimpleDialogs/blob/master/Docs/logo.png?raw=true">](https://github.com/schdck/SimpleDialogs)
 
   # SimpleDialogs
   
@@ -46,19 +46,19 @@ Then just add the following `Resource Dictionary`
 ## :camera: Screenshots
   
 #### Progress dialogs
-![](https://i.imgur.com/R9BLTfo.gif)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialog.gif?raw=true)
   
 #### Information dialog
-![](https://i.imgur.com/plOvEVp.png")
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InformationDialog.png?raw=true)
  
 #### Success dialog
-![](https://i.imgur.com/uFWmZNi.png")
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/SuccessDialog.png?raw=true)
   
 #### Warning dialog
-![](https://i.imgur.com/8G4zNoR.png")
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/WarningDialog.png?raw=true)
   
 #### Error dialog
-![](https://i.imgur.com/IC6jEvr.png")
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ErrorDialog.png?raw=true)
   
 #### Critical error dialog
-![](https://i.imgur.com/fqnbnu9.png")
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/CriticalDialog.png?raw=true)
