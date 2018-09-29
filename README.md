@@ -46,7 +46,7 @@ Then just add the following `Resource Dictionary`
 ## :camera: Screenshots
   
 #### Progress dialogs
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialog.gif?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialogs.gif?raw=true)
   
 #### Information dialog
 ![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InformationDialog.png?raw=true)
