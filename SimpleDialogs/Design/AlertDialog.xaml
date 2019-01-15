@@ -4,7 +4,7 @@
                     xmlns:enums="clr-namespace:SimpleDialogs.Enumerators">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Styles/ButtonStyles.xaml" />
+        <ResourceDictionary Source="../Resources/SquareButtonStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

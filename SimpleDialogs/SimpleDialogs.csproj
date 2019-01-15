@@ -86,23 +86,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Design\AlertDialog.xaml">
+    <Page Include="Design\AlertDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Design\ProgressRing.xaml">
+    <Page Include="Design\ProgressRing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Styles\ButtonStyles.xaml">
+    <Page Include="Resources\SquareButtonStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Design\ProgressDialog.xaml">
+    <Page Include="Design\ProgressDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Design\SimpleDialogs.xaml">
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

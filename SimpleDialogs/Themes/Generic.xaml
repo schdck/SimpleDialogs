@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/SimpleDialogs;component/Design/AlertDialog.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SimpleDialogs;component/Design/ProgressDialog.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
