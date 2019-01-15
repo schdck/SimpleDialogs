@@ -1,5 +1,7 @@
 ﻿using SimpleDialogs.Controls;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,89 +9,45 @@ namespace SimpleDialogs
 {
     public static class DialogManager
     {
-        public static readonly DependencyProperty DefaultDialogContainerProperty = DependencyProperty.RegisterAttached(
-            nameof(DefaultDialogContainer),
-            typeof(FrameworkElement),
-            typeof(DialogManager),
-            new PropertyMetadata(default(FrameworkElement), RegisterPropertyChangedCallback));
+        private static List<Tuple<DialogContainer, Type>> _Listeners = new List<Tuple<DialogContainer, Type>>();
 
-        private static void RegisterPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        internal static void Subscribe(DialogContainer container, Type senderType)
         {
-            var newValue = dependencyPropertyChangedEventArgs.NewValue as FrameworkElement;
+            _Listeners.Add(new Tuple<DialogContainer, Type>(container, senderType));
+        }
 
-            if (newValue != null)
+        internal static void Unsubscribe(DialogContainer container)
+        {
+            _Listeners.RemoveAll(x => x.Item1 == container);
+        }
+
+        internal static void ShowDialog(object sender, BaseDialog dialog)
+        {
+            var type = sender.GetType();
+
+            foreach(var listener in _Listeners)
             {
-                newValue.Loaded += (s, e) =>
+                if(listener.Item2.IsAssignableFrom(type))
                 {
-                    FrameworkElement container = null;
-
-                    if (newValue is Panel)
-                    {
-                        container = new ContentControl();
-
-                        (DefaultDialogContainer as Panel).Children.Add(container);
-                    }
-                    else if (newValue is ContentControl)
-                    {
-                        container = new ContentControl();
-
-                        var contentControl = newValue as ContentControl;
-                        var content = contentControl.Content as UIElement;
-
-                        Grid grid = new Grid();
-
-                        contentControl.Content = grid;
-
-                        if (content != null)
-                        {
-                            grid.Children.Add(content);
-                        }
-                        grid.Children.Add(container);
-                    }
-                    else
-                    {
-                        throw new Exception("The DefaultDialogContainer is not of a supported type, make sure it descends either from ContentControl or from Panel.");
-                    }
-
-                    DefaultDialogContainer = container;
-                };
+                    listener.Item1.DisplayDialog(dialog);
+                }
             }
         }
 
-        public static void SetDefaultDialogContainer(DependencyObject element, object context)
+        public static void HideDialog(BaseDialog dialog)
         {
-            element.SetValue(DefaultDialogContainerProperty, context);
-        }
-
-        public static object GetDefaultDialogContainer(DependencyObject element)
-        {
-            return element.GetValue(DefaultDialogContainerProperty);
-        }
-
-        public static FrameworkElement DefaultDialogContainer { get; set; }
-
-        public static void ShowDialog(BaseDialog dialog)
-        {
-            var container = DefaultDialogContainer as ContentControl;
-
-            if(container == null)
+            foreach (var listener in _Listeners)
             {
-                throw new ArgumentNullException("The DefaultDialogContainer is not initialized.");
+                listener.Item1.CloseDialog(dialog);
             }
-
-            container.Content = dialog;
         }
 
-        public static void HideVisibleDialog()
+        public static void HideAllVisibleDialogs()
         {
-            var container = DefaultDialogContainer as ContentControl;
-
-            if (container == null)
+            foreach(var listener in _Listeners)
             {
-                throw new ArgumentNullException("The DefaultDialogContainer is not initialized.");
+                listener.Item1.CloseAllDialogs();
             }
-
-            container.Content = null;
         }
     }
 }

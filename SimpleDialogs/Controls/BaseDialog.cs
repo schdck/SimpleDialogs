@@ -8,12 +8,7 @@ namespace SimpleDialogs.Controls
 {
     public abstract class BaseDialog : Control
     {
-        private static readonly ICommand StaticDefaultExitDialogCommand = new SimpleCommand(() =>
-        {
-            DialogManager.HideVisibleDialog();
-        });
-
-        public static DependencyProperty ExitDialogCommandProperty = DependencyProperty.Register(nameof(ExitDialogCommand), typeof(ICommand), typeof(BaseDialog), new PropertyMetadata(StaticDefaultExitDialogCommand));
+        public static DependencyProperty ExitDialogCommandProperty = DependencyProperty.Register(nameof(ExitDialogCommand), typeof(ICommand), typeof(BaseDialog), new PropertyMetadata(null));
 
         public ICommand ExitDialogCommand
         {

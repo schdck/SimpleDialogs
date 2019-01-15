@@ -57,6 +57,7 @@
     <Compile Include="Commands\SimpleCommand.cs" />
     <Compile Include="Controls\BaseDialog.cs" />
     <Compile Include="Controls\AlertDialog.cs" />
+    <Compile Include="Controls\DialogContainer.cs" />
     <Compile Include="Controls\ProgressDialog.cs" />
     <Compile Include="Controls\ProgressRing.cs" />
     <Compile Include="DialogManager.cs" />
@@ -87,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Design\AlertDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Design\DialogContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
