@@ -1,4 +1,5 @@
 ﻿using SimpleDialogs.Controls;
+using SimpleDialogs.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace SimpleDialogs
             _Listeners.RemoveAll(x => x.Item1 == container);
         }
 
-        internal static void ShowDialog(object sender, BaseDialog dialog)
+        public static void ShowDialog(object sender, BaseDialog dialog)
         {
             var type = sender.GetType();
 
@@ -34,17 +35,22 @@ namespace SimpleDialogs
             }
         }
 
-        public static void HideDialog(BaseDialog dialog)
+        public static void CloseDialog(BaseDialog dialog)
+        {
+            CloseDialog(dialog, DialogResult.None);
+        }
+
+        internal static void CloseDialog(BaseDialog dialog, DialogResult result)
         {
             foreach (var listener in _Listeners)
             {
-                listener.Item1.CloseDialog(dialog);
+                listener.Item1.CloseDialog(dialog, result);
             }
         }
 
-        public static void HideAllVisibleDialogs()
+        public static void CloseAllDialogs()
         {
-            foreach(var listener in _Listeners)
+            foreach (var listener in _Listeners)
             {
                 listener.Item1.CloseAllDialogs();
             }

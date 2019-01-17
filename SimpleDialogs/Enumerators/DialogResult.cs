@@ -2,9 +2,8 @@
 {
     public enum DialogResult
     {
-        Ok,
-        Yes,
-        No,
-        Cancel
+        None,
+        PrimaryButton,
+        AuxiliaryButton
     }
 }

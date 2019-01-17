@@ -1,6 +1,6 @@
 ﻿namespace SimpleDialogs.Enumerators
 {
-    public enum AlertLevel
+    public enum MessageSeverity
     {
         Information,
         Success,

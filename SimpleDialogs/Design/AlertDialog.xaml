@@ -1,221 +1,202 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dialogs="clr-namespace:SimpleDialogs.Controls"
-                    xmlns:enums="clr-namespace:SimpleDialogs.Enumerators">
+                    xmlns:enums="clr-namespace:SimpleDialogs.Enumerators"
+                    xmlns:converters="clr-namespace:SimpleDialogs.ValueConverters">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Resources/SquareButtonStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"
+                                          FalseValue="Collapsed" />
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityAlternativeConverter"
+                                          FalseValue="Collapsed" />
+
+
+    <ControlTemplate x:Key="AlertDialogTemplate">
+        <Grid DataContext="{Binding CurrentDialog, RelativeSource={RelativeSource AncestorType=dialogs:DialogContainer}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <Path Grid.Column="0"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  Width="75"
+                  Height="75"
+                  Stretch="Uniform"
+                  Fill="{Binding Foreground}">
+                <Path.Style>
+                    <Style TargetType="Path">
+                        <!--
+                            Modern UI Icons - appbar_warnnig
+                            http://modernuiicons.com/
+                        -->
+                        <Setter Property="Data"
+                                Value="M38,19C48.5,19 57,27.5 57,38C57,48.5 48.5,57 38,57C27.5,57 19,48.5 19,38C19,27.5 27.5,19 38,19M34.04,25.73L36,41.96H40L41.96,25.73H34.04M38,44.33A3.17,3.17 0 0,0 34.83,47.5A3.17,3.17 0 0,0 38,50.67A3.17,3.17 0 0,0 41.17,47.5A3.17,3.17 0 0,0 38,44.33Z" />
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MessageSeverity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:AlertDialog}}"
+                                         Value="{x:Static enums:MessageSeverity.Information}">
+                                <!--
+                                    Entypo - info-with-circle.svg
+                                    http://www.entypo.com/
+                                -->
+                                <Setter Property="Data"
+                                        Value="M10,0.4c-5.303,0-9.601,4.298-9.601,9.6c0,5.303,4.298,9.601,9.601,9.601c5.301,0,9.6-4.298,9.6-9.601  C19.6,4.698,15.301,0.4,10,0.4z M10.896,3.866c0.936,0,1.211,0.543,1.211,1.164c0,0.775-0.62,1.492-1.679,1.492  c-0.886,0-1.308-0.445-1.282-1.182C9.146,4.719,9.665,3.866,10.896,3.866z M8.498,15.75c-0.64,0-1.107-0.389-0.66-2.094l0.733-3.025  c0.127-0.484,0.148-0.678,0-0.678c-0.191,0-1.022,0.334-1.512,0.664L6.74,10.094c1.555-1.299,3.343-2.061,4.108-2.061  c0.64,0,0.746,0.756,0.427,1.92l-0.84,3.18c-0.149,0.562-0.085,0.756,0.064,0.756c0.192,0,0.82-0.232,1.438-0.719l0.362,0.486  C10.786,15.168,9.137,15.75,8.498,15.75z" />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding MessageSeverity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:AlertDialog}}"
+                                         Value="{x:Static enums:MessageSeverity.Success}">
+                                <!--
+                                    Material Design Icons - mdi-checkbox-marked-circle
+                                    https://cdn.materialdesignicons.com/1.1.34/
+                                -->
+                                <Setter Property="Data"
+                                        Value="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2Z" />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding MessageSeverity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:AlertDialog}}"
+                                         Value="{x:Static enums:MessageSeverity.Warning}">
+                                <!--
+                                    Modern UI Icons - appbar_warning_circle
+                                    http://modernuiicons.com/
+                                -->
+                                <Setter Property="Data"
+                                        Value="M58.58,55.42H17.42C15.56,53.56 15.56,50.55 17.42,48.7L35.2,15.84C37.06,14 40.06,14 41.92,15.84L58.58,48.7C60.44,50.55 60.44,53.56 58.58,55.42M34.04,25.73L36,41.96H40L41.96,25.73H34.04M38,44.33A3.17,3.17 0 0,0 34.83,47.5A3.17,3.17 0 0,0 38,50.67A3.17,3.17 0 0,0 41.17,47.5A3.17,3.17 0 0,0 38,44.33Z" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
+
+            <ScrollViewer Grid.Column="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Margin="5">
+                <TextBlock Margin="0 0 10 0"
+                           VerticalAlignment="Center"
+                           TextAlignment="Justify"
+                           TextWrapping="Wrap"
+                           Foreground="{DynamicResource SimpleDialogBestForegroundForBackground}"
+                           Text="{Binding Content}" />
+            </ScrollViewer>
+        </Grid>
+    </ControlTemplate>
 
     <Style TargetType="dialogs:AlertDialog">
-        <Setter Property="Template">
+        <Style.Triggers>
+            <Trigger Property="MessageSeverity"
+                     Value="{x:Static enums:MessageSeverity.Information}">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource SimpleDialogInformationBrush}" />
+                <Setter Property="AlternativeForeground"
+                        Value="{DynamicResource SimpleDialogInformationAlternativeBrush}" />
+                <Setter Property="TitleForeground"
+                        Value="{DynamicResource SimpleDialogBestForegroundForInformation}" />
+            </Trigger>
+
+            <Trigger Property="MessageSeverity"
+                     Value="{x:Static enums:MessageSeverity.Success}">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource SimpleDialogSuccessBrush}" />
+                <Setter Property="AlternativeForeground"
+                        Value="{DynamicResource SimpleDialogSuccessAlternativeBrush}" />
+                <Setter Property="TitleForeground"
+                        Value="{DynamicResource SimpleDialogBestForegroundForSuccess}" />
+            </Trigger>
+
+            <Trigger Property="MessageSeverity"
+                     Value="{x:Static enums:MessageSeverity.Warning}">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource SimpleDialogWarningBrush}" />
+                <Setter Property="AlternativeForeground"
+                        Value="{DynamicResource SimpleDialogWarningAlternativeBrush}" />
+                <Setter Property="TitleForeground"
+                        Value="{DynamicResource SimpleDialogBestForegroundForWarning}" />
+            </Trigger>
+
+            <Trigger Property="MessageSeverity"
+                     Value="{x:Static enums:MessageSeverity.Error}">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource SimpleDialogErrorBrush}" />
+                <Setter Property="AlternativeForeground"
+                        Value="{DynamicResource SimpleDialogErrorAlternativeBrush}" />
+                <Setter Property="TitleForeground"
+                        Value="{DynamicResource SimpleDialogBestForegroundForError}" />
+            </Trigger>
+
+            <Trigger Property="MessageSeverity"
+                     Value="{x:Static enums:MessageSeverity.Critical}">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource SimpleDialogCriticalBrush}" />
+                <Setter Property="AlternativeForeground"
+                        Value="{DynamicResource SimpleDialogCriticalAlternativeBrush}" />
+                <Setter Property="TitleForeground"
+                        Value="{DynamicResource SimpleDialogBestForegroundForCritical}" />
+            </Trigger>
+        </Style.Triggers>
+
+        <Setter Property="Buttons">
             <Setter.Value>
-                <ControlTemplate TargetType="dialogs:AlertDialog">
-                    <Grid>
-                        <Grid Opacity=".5"
-                              Background="Gray"
-                              Visibility="{TemplateBinding ShowOverlay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <StackPanel DockPanel.Dock="Bottom"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0 5">
+                    <Button Style="{StaticResource DialogSquareButtonStyle}"
+                            Content="{Binding CopyToClipboardButtonContent}"
+                            Visibility="{Binding ShowCopyToClipboardButton, TargetNullValue=Collapsed, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
+                            Command="{Binding CopyToClipboardCommand}"
+                            MinWidth="120" />
 
-                        <Grid VerticalAlignment="Center"
-                              HorizontalAlignment="Center"
-                              Width="{TemplateBinding DialogWidth}"
-                              Height="{TemplateBinding DialogHeight}">
+                    <Button Style="{StaticResource DialogSquareButtonStyle}"
+                            Content="{Binding AuxiliaryButtonContent}"
+                            Visibility="{Binding ShowAuxiliaryButton, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
+                            Command="{Binding CloseDialogCommand}"
+                            CommandParameter="{x:Static enums:DialogResult.AuxiliaryButton}"
+                            IsEnabled="{Binding CanClose}"
+                            MinWidth="120" />
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                    <Button Margin="5 0"
+                            Content="{Binding PrimaryButtonContent}"
+                            Command="{Binding CloseDialogCommand}"
+                            CommandParameter="{x:Static enums:DialogResult.PrimaryButton}"
+                            IsEnabled="{Binding CanClose}"
+                            MinWidth="120">
+                        <Button.Style>
+                            <Style TargetType="Button"
+                                   BasedOn="{StaticResource DialogBaseSquareButtonStyle}">
+                                <Setter Property="Background"
+                                        Value="{Binding Foreground}" />
 
-                            <Grid Grid.Row="0"
-                                  Background="{TemplateBinding Foreground}">
+                                <Setter Property="Foreground"
+                                        Value="{Binding CurrentDialog.TitleForeground, RelativeSource={RelativeSource AncestorType=dialogs:DialogContainer}}" />
 
-                                <TextBlock Margin="5 0"
-                                           VerticalAlignment="Center"
-                                           FontWeight="SemiBold"
-                                           Text="{TemplateBinding Title}"
-                                           Foreground="{TemplateBinding TitleForeground}" />
-
-                            </Grid>
-
-                            <Grid Grid.Row="1"
-                                  Background="White">
-
-                                <DockPanel>
-                                    <StackPanel Orientation="Horizontal"
-                                                DockPanel.Dock="Bottom"
-                                                HorizontalAlignment="Right"
-                                                Margin="0 5">
-
-                                        <Button Style="{StaticResource SquareButtonStyle}"
-                                                Visibility="{TemplateBinding ShowCopyToClipboardButton, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                Command="{Binding CopyToClipboardCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Content="{TemplateBinding CopyToClipboardButtonContent}"
-                                                Width="150" />
-
-                                        <Grid Margin="5 0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <StackPanel.Style>
-                                                    <Style TargetType="StackPanel">
-                                                        <Setter Property="Visibility"
-                                                                Value="Collapsed" />
-
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ButtonsStyle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:BaseDialog}}"
-                                                                         Value="{x:Static enums:DialogButtonStyle.YesNo}">
-                                                                <Setter Property="Visibility"
-                                                                        Value="Visible" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </StackPanel.Style>
-
-                                                <Button Style="{StaticResource ColoredSquareButtonStyle}"
-                                                        Width="120"
-                                                        Content="{TemplateBinding YesButtonContent}"
-                                                        Command="{TemplateBinding ExitDialogCommand}"
-                                                        CommandParameter="{x:Static enums:DialogResult.Yes}" />
-
-                                                <Button Style="{StaticResource SquareButtonStyle}"
-                                                        Width="120"
-                                                        Margin="5 0 0 0"
-                                                        Content="{TemplateBinding NoButtonContent}"
-                                                        Command="{TemplateBinding ExitDialogCommand}"
-                                                        CommandParameter="{x:Static enums:DialogResult.No}" />
-                                            </StackPanel>
-
-                                            <StackPanel Orientation="Horizontal">
-                                                <StackPanel.Style>
-                                                    <Style TargetType="StackPanel">
-                                                        <Setter Property="Visibility"
-                                                                Value="Collapsed" />
-
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ButtonsStyle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:BaseDialog}}"
-                                                                         Value="{x:Static enums:DialogButtonStyle.Ok}">
-                                                                <Setter Property="Visibility"
-                                                                        Value="Visible" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </StackPanel.Style>
-
-                                                <Button Width="120"
-                                                        Content="{TemplateBinding OkButtonContent}"
-                                                        Style="{StaticResource ColoredSquareButtonStyle}"
-                                                        Command="{TemplateBinding ExitDialogCommand}"
-                                                        CommandParameter="{x:Static enums:DialogResult.Ok}" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </StackPanel>
-
-                                    <Grid DockPanel.Dock="Top">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="3*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <ContentControl Grid.Column="0"
-                                                        VerticalAlignment="Center"
-                                                        HorizontalAlignment="Center"
-                                                        Width="75"
-                                                        Height="75">
-
-                                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:BaseDialog}}"
-                                                  Stretch="Uniform">
-                                                <Path.Style>
-                                                    <Style TargetType="Path">
-                                                        <!--
-                                                        Modern UI Icons - appbar_warnnig
-                                                        http://modernuiicons.com/
-                                                        -->
-                                                        <Setter Property="Data"
-                                                                Value="M38,19C48.5,19 57,27.5 57,38C57,48.5 48.5,57 38,57C27.5,57 19,48.5 19,38C19,27.5 27.5,19 38,19M34.04,25.73L36,41.96H40L41.96,25.73H34.04M38,44.33A3.17,3.17 0 0,0 34.83,47.5A3.17,3.17 0 0,0 38,50.67A3.17,3.17 0 0,0 41.17,47.5A3.17,3.17 0 0,0 38,44.33Z" />
-
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding AlertLevel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:AlertDialog}}"
-                                                                         Value="{x:Static enums:AlertLevel.Information}">
-                                                                <!--
-                                                                Entypo - info-with-circle.svg
-                                                                http://www.entypo.com/
-                                                                -->
-                                                                <Setter Property="Data"
-                                                                        Value="M10,0.4c-5.303,0-9.601,4.298-9.601,9.6c0,5.303,4.298,9.601,9.601,9.601c5.301,0,9.6-4.298,9.6-9.601  C19.6,4.698,15.301,0.4,10,0.4z M10.896,3.866c0.936,0,1.211,0.543,1.211,1.164c0,0.775-0.62,1.492-1.679,1.492  c-0.886,0-1.308-0.445-1.282-1.182C9.146,4.719,9.665,3.866,10.896,3.866z M8.498,15.75c-0.64,0-1.107-0.389-0.66-2.094l0.733-3.025  c0.127-0.484,0.148-0.678,0-0.678c-0.191,0-1.022,0.334-1.512,0.664L6.74,10.094c1.555-1.299,3.343-2.061,4.108-2.061  c0.64,0,0.746,0.756,0.427,1.92l-0.84,3.18c-0.149,0.562-0.085,0.756,0.064,0.756c0.192,0,0.82-0.232,1.438-0.719l0.362,0.486  C10.786,15.168,9.137,15.75,8.498,15.75z" />
-                                                            </DataTrigger>
-
-                                                            <DataTrigger Binding="{Binding AlertLevel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:AlertDialog}}"
-                                                                         Value="{x:Static enums:AlertLevel.Success}">
-                                                                <!--
-                                                                Material Design Icons - mdi-checkbox-marked-circle
-                                                                https://cdn.materialdesignicons.com/1.1.34/
-                                                                -->
-                                                                <Setter Property="Data"
-                                                                        Value="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2Z" />
-                                                            </DataTrigger>
-
-                                                            <DataTrigger Binding="{Binding AlertLevel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:AlertDialog}}"
-                                                                         Value="{x:Static enums:AlertLevel.Warning}">
-                                                                <!--
-                                                                Modern UI Icons - appbar_warning_circle
-                                                                http://modernuiicons.com/
-                                                                -->
-                                                                <Setter Property="Data"
-                                                                        Value="M58.58,55.42H17.42C15.56,53.56 15.56,50.55 17.42,48.7L35.2,15.84C37.06,14 40.06,14 41.92,15.84L58.58,48.7C60.44,50.55 60.44,53.56 58.58,55.42M34.04,25.73L36,41.96H40L41.96,25.73H34.04M38,44.33A3.17,3.17 0 0,0 34.83,47.5A3.17,3.17 0 0,0 38,50.67A3.17,3.17 0 0,0 41.17,47.5A3.17,3.17 0 0,0 38,44.33Z" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Path.Style>
-                                            </Path>
-                                        </ContentControl>
-
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="5 5 20 5"
-                                                   TextAlignment="Justify"
-                                                   VerticalAlignment="Center"
-                                                   TextWrapping="Wrap"
-                                                   Foreground="Black"
-                                                   Text="{TemplateBinding Message}" />
-                                    </Grid>
-                                </DockPanel>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </ControlTemplate>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="{Binding CurrentDialog.AlternativeForeground, RelativeSource={RelativeSource AncestorType=dialogs:DialogContainer}}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
             </Setter.Value>
         </Setter>
 
-        <Style.Triggers>
-            <Trigger Property="AlertLevel"
-                     Value="{x:Static enums:AlertLevel.Information}">
-                <Setter Property="Foreground"
-                        Value="SkyBlue" />
-            </Trigger>
-            
-            <Trigger Property="AlertLevel"
-                     Value="{x:Static enums:AlertLevel.Success}">
-                <Setter Property="Foreground"
-                        Value="YellowGreen" />
-            </Trigger>
-            
-            <Trigger Property="AlertLevel"
-                     Value="{x:Static enums:AlertLevel.Warning}">
-                <Setter Property="Foreground"
-                        Value="Orange" />
-            </Trigger>
+        <Setter Property="BorderThickness"
+                Value="1" />
 
-            <Trigger Property="AlertLevel"
-                     Value="{x:Static enums:AlertLevel.Error}">
-                <Setter Property="Foreground"
-                        Value="IndianRed" />
-            </Trigger>
+        <Setter Property="Template"
+                Value="{StaticResource AlertDialogTemplate}" />
 
-            <Trigger Property="AlertLevel"
-                     Value="{x:Static enums:AlertLevel.Critical}">
-                <Setter Property="Foreground"
-                        Value="Tomato" />
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="BorderBrush"
+                Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
     </Style>
-    
 </ResourceDictionary>

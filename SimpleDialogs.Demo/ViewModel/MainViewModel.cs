@@ -24,27 +24,18 @@ namespace SimpleDialogs.Demo.ViewModel
                 Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
             });
 
-            DialogCloseCommand = new RelayCommand<DialogResult>((result) =>
-            {
-                DialogResult = result;
-
-                DialogManager.HideVisibleDialog();
-            });
-
             ShowDialogCommand = new RelayCommand<DialogStyle>((dialogType) =>
             {
-                DialogResult = null;
-
                 if(dialogType == DialogStyle.DefinedProgressDialog)
                 {
-                    ProgressDialog myDialog = new ProgressDialog()
+                    ProgressDialog dialog = new ProgressDialog()
                     {
-                        CanCancel = false,
-                        IsUndefined = false,
-                        ExitDialogCommand = DialogCloseCommand,
-                        Message = "Please wait...",
+                        CanClose = false,
+                        Content = "Please wait...",
                         Title = "Working..."
                     };
+
+                    dialog.DialogClosed += DialogClosed;
 
                     Timer t = new Timer(30);
 
@@ -52,118 +43,93 @@ namespace SimpleDialogs.Demo.ViewModel
                     {
                         MainWindow.Instance.Dispatcher.Invoke(() =>
                         {
-                            if (myDialog.Progress < 100)
+                            if (dialog.Progress < 100)
                             {
-                                myDialog.Progress++;
+                                dialog.Progress++;
                             }
                             else
                             {
+                                dialog.CanClose = true;
+                                dialog.Title = "It's done!";
+                                dialog.Content = "I don't know what I was doing, just know that it's finished.";
+
                                 t.Stop();
                             }
                         });
                     };
 
-                    DialogManager.ShowDialog(myDialog);
+                    DialogManager.ShowDialog(this, dialog);
 
                     t.Start();
                 }
+                else if(dialogType == DialogStyle.UndefinedProgressDialog)
+                {
+                    var dialog = new ProgressDialog()
+                    {
+                        IsUndefined = true,
+                        Content = "Please wait...",
+                        Title = "Working..."
+                    };
+
+                    dialog.DialogClosed += DialogClosed;
+
+                    DialogManager.ShowDialog(this, dialog);
+                }
                 else
                 {
-                    BaseDialog myDialog = null;
+                    AlertDialog dialog = new AlertDialog()
+                    {
+                        Title = "Alert dialog",
+                    };
+
+                    dialog.DialogClosed += DialogClosed;
 
                     switch (dialogType)
                     {
-                        case DialogStyle.UndefinedProgressDialog:
-                            myDialog = new ProgressDialog()
-                            {
-                                CanCancel = true,
-                                IsUndefined = true,
-                                ExitDialogCommand = DialogCloseCommand,
-                                Message = "Please wait...",
-                                Title = "Working..."
-                            };
-                            break;
-
                         case DialogStyle.InformationDialog:
-                            myDialog = new AlertDialog()
-                            {
-                                AlertLevel = AlertLevel.Information,
-                                ButtonsStyle = DialogButtonStyle.Ok,
-                                ExitDialogCommand = DialogCloseCommand,
-                                ShowCopyToClipboardButton = false,
-                                Message = "This is some information that I wanted to show you!",
-                                Title = "Information"
-                            };
+                            dialog.MessageSeverity = MessageSeverity.Information;
+                            dialog.Content = "This is some information that we wanted to show you!";
                             break;
 
                         case DialogStyle.SuccessDialog:
-                            myDialog = new AlertDialog()
-                            {
-                                AlertLevel = AlertLevel.Success,
-                                ButtonsStyle = DialogButtonStyle.Ok,
-                                ExitDialogCommand = DialogCloseCommand,
-                                ShowCopyToClipboardButton = false,
-                                Message = "Some operation succeeded!",
-                                Title = "Success!"
-                            };
+                            dialog.MessageSeverity = MessageSeverity.Success;
+                            dialog.Content = "WE DID IT BOYS!!!";
                             break;
 
                         case DialogStyle.WarningDialog:
-                            myDialog = new AlertDialog()
-                            {
-                                AlertLevel = AlertLevel.Warning,
-                                ButtonsStyle = DialogButtonStyle.Ok,
-                                ExitDialogCommand = DialogCloseCommand,
-                                ShowCopyToClipboardButton = true,
-                                Message = "This is a Alert (Warning) Dialog example",
-                                Title = "My custom warning"
-                            };
+                            dialog.MessageSeverity = MessageSeverity.Warning;
+                            dialog.Content = "PLEASE BE CAREFUL (THIS IS A WARNING)";
                             break;
 
                         case DialogStyle.ErrorDialog:
-                            myDialog = new AlertDialog()
-                            {
-                                AlertLevel = AlertLevel.Error,
-                                ButtonsStyle = DialogButtonStyle.YesNo,
-                                ExitDialogCommand = DialogCloseCommand,
-                                ShowCopyToClipboardButton = false,
-                                Message = "You can also confirm something while displaying an alert or message dialog... Got it?",
-                                Title = "Error example"
-                            };
+                            dialog.MessageSeverity = MessageSeverity.Error;
+                            dialog.ShowAuxiliaryButton = true;
+                            dialog.PrimaryButtonContent = "YES";
+                            dialog.AuxiliaryButtonContent = "NO";
+                            dialog.Content = "You can also confirm something while displaying an alert or message dialog... Got it?";
                             break;
 
                         case DialogStyle.CriticalDialog:
-                            myDialog = new AlertDialog()
-                            {
-                                AlertLevel = AlertLevel.Critical,
-                                ButtonsStyle = DialogButtonStyle.Ok,
-                                ExitDialogCommand = DialogCloseCommand,
-                                ShowCopyToClipboardButton = false,
-                                Message = "Something really bad happend, so I'm gona leave a big message here:\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.",
-                                Title = "Critical error"
-                            };
+                            dialog.MessageSeverity = MessageSeverity.Critical;
+                            dialog.Content = "Something really bad happend, so I'm gona leave a big message here:\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.";
                             break;
 
                         case DialogStyle.ExceptionDialog:
-                            Exception e = new Exception("This is some exception", new Exception("And this is its inner exception"));
-
-                            myDialog = new AlertDialog()
-                            {
-                                AlertLevel = AlertLevel.Warning,
-                                ButtonsStyle = DialogButtonStyle.Ok,
-                                ExitDialogCommand = DialogCloseCommand,
-                                ShowCopyToClipboardButton = true,
-                                Exception = e,
-                                Message = "Some exception was caught. The details are contained in the clipboard after 'CopyToClipboard' button is clicked.",
-                                Title = "Exception ocurred"
-                            };
-
+                            dialog.MessageSeverity = MessageSeverity.Warning;
+                            dialog.Content = "Some exception was caught. The details are contained in the clipboard after 'CopyToClipboard' button is clicked.";
+                            dialog.ShowCopyToClipboardButton = true;
+                            dialog.Exception = new Exception("This is some exception that I got for you <3", new Exception("And this is its inner exception <3 <3"));
                             break;
                     }
 
-                    DialogManager.ShowDialog(myDialog);
+                    DialogManager.ShowDialog(this, dialog);
                 }
             });
+        }
+
+        private void DialogClosed(object sender, DialogClosedEventArgs e)
+        {
+            DialogResult = e.Result;
         }
     }
 }

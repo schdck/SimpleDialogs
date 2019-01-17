@@ -1,28 +1,30 @@
-﻿using System;
+﻿using SimpleDialogs.Enumerators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SimpleDialogs.Controls
 {
-    public class DialogContainer : UIElement
+    public class DialogContainer : Control
     {
-        private List<BaseDialog> _VisibleDialogs;
-
         private static DependencyPropertyKey CurrentDialogPropertyKey =
             DependencyProperty.RegisterReadOnly(nameof(CurrentDialog), typeof(BaseDialog), typeof(DialogContainer), new PropertyMetadata());
 
         public static DependencyProperty CurrentDialogProperty =
             CurrentDialogPropertyKey.DependencyProperty;
 
+        public static DependencyProperty DisplayDialogsFromTypeProperty =
+            DependencyProperty.Register(nameof(DisplayDialogsFromType), typeof(Type), typeof(DialogContainer), new PropertyMetadata(typeof(object), new PropertyChangedCallback(DisplayDialogsFromTypeChanged)));
+
+        private List<BaseDialog> _VisibleDialogs;
+
         public BaseDialog CurrentDialog
         {
             get => (BaseDialog)GetValue(CurrentDialogProperty);
             private set => SetValue(CurrentDialogPropertyKey, value);
         }
-
-        public static DependencyProperty DisplayDialogsFromTypeProperty =
-            DependencyProperty.Register(nameof(DisplayDialogsFromType), typeof(Type), typeof(DialogContainer), new PropertyMetadata(typeof(object), new PropertyChangedCallback(DisplayDialogsFromTypeChanged)));
 
         public Type DisplayDialogsFromType
         {
@@ -37,34 +39,39 @@ namespace SimpleDialogs.Controls
             DialogManager.Subscribe(this, typeof(object));
         }
 
-        public void DisplayDialog(BaseDialog dialog)
+        internal void DisplayDialog(BaseDialog dialog)
         {
             _VisibleDialogs.Add(dialog);
 
             CurrentDialog = dialog;
+
+            dialog.Show();
         }
 
-        internal void CloseDialog(BaseDialog dialog)
+        internal void CloseDialog(BaseDialog dialog, DialogResult result)
         {
-            for(int i = 0; i < _VisibleDialogs.Count; i++)
+            for (int i = 0; i < _VisibleDialogs.Count; i++)
             {
-                if(_VisibleDialogs[i] == dialog)
+                if (_VisibleDialogs[i] == dialog)
                 {
                     _VisibleDialogs.RemoveAt(i--);
                 }
             }
 
-            if(dialog == CurrentDialog)
+            if (dialog == CurrentDialog)
             {
                 CurrentDialog = _VisibleDialogs.LastOrDefault();
             }
+
+            dialog.Close(result);
         }
 
         internal void CloseAllDialogs()
         {
-            _VisibleDialogs.Clear();
-
-            CurrentDialog = null;
+            while(CurrentDialog != null)
+            {
+                CloseDialog(CurrentDialog, DialogResult.None);
+            }
         }
 
         private static void DisplayDialogsFromTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)

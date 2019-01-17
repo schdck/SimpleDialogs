@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="SimpleDialogProgressBrush"
+                     Color="#FF00B5FF" />
+
+    <SolidColorBrush x:Key="SimpleDialogProgressAlternativeBrush"
+                     Color="#FF77D7FF" />
+
+    <SolidColorBrush x:Key="SimpleDialogBestForegroundForProgress"
+                     Color="Black" />
+    
+    <SolidColorBrush x:Key="SimpleDialogInformationBrush"
+                     Color="SkyBlue" />
+
+    <SolidColorBrush x:Key="SimpleDialogInformationAlternativeBrush"
+                     Color="SkyBlue" />
+
+    <SolidColorBrush x:Key="SimpleDialogBestForegroundForInformation"
+                     Color="Black" />
+
+    <SolidColorBrush x:Key="SimpleDialogSuccessBrush"
+                     Color="YellowGreen" />
+
+    <SolidColorBrush x:Key="SimpleDialogAlternativeSuccessBrush"
+                     Color="#FFB7EA4F" />
+
+    <SolidColorBrush x:Key="SimpleDialogBestForegroundForSuccess"
+                     Color="Black" />
+
+    <SolidColorBrush x:Key="SimpleDialogWarningBrush"
+                     Color="Orange" />
+
+    <SolidColorBrush x:Key="SimpleDialogWarningAlternativeBrush"
+                     Color="#FFFFC967" />
+
+    <SolidColorBrush x:Key="SimpleDialogBestForegroundForWarning"
+                     Color="Black" />
+
+    <SolidColorBrush x:Key="SimpleDialogErrorBrush"
+                     Color="Tomato" />
+
+    <SolidColorBrush x:Key="SimpleDialogErrorAlternativeBrush"
+                     Color="#FFFF8A75" />
+
+    <SolidColorBrush x:Key="SimpleDialogBestForegroundForError"
+                     Color="Black" />
+
+    <SolidColorBrush x:Key="SimpleDialogCriticalBrush"
+                     Color="IndianRed" />
+
+    <SolidColorBrush x:Key="SimpleDialogCriticalAlternativeBrush"
+                     Color="#FFF06D6D" />
+
+    <SolidColorBrush x:Key="SimpleDialogBestForegroundForCritical"
+                     Color="Black" />
+</ResourceDictionary>

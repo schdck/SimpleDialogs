@@ -8,20 +8,12 @@ namespace SimpleDialogs.Controls
 {
     public class AlertDialog : BaseDialog
     {
-        public static DependencyProperty AlertLevelProperty = DependencyProperty.Register(nameof(AlertLevel), typeof(AlertLevel), typeof(AlertDialog));
+        public static DependencyProperty MessageSeverityProperty = DependencyProperty.Register(nameof(MessageSeverity), typeof(MessageSeverity), typeof(AlertDialog));
 
-        public AlertLevel AlertLevel
+        public MessageSeverity MessageSeverity
         {
-            get => (AlertLevel)GetValue(AlertLevelProperty);
-            set => SetValue(AlertLevelProperty, value);
-        }
-
-        public static DependencyProperty ButtonsStyleProperty = DependencyProperty.Register(nameof(ButtonsStyle), typeof(DialogButtonStyle), typeof(AlertDialog));
-
-        public DialogButtonStyle ButtonsStyle
-        {
-            get => (DialogButtonStyle)GetValue(ButtonsStyleProperty);
-            set => SetValue(ButtonsStyleProperty, value);
+            get => (MessageSeverity)GetValue(MessageSeverityProperty);
+            set => SetValue(MessageSeverityProperty, value);
         }
 
         public static DependencyProperty ShowCopyToClipboardButtonProperty = DependencyProperty.Register(nameof(ShowCopyToClipboardButton), typeof(bool), typeof(AlertDialog));
@@ -32,22 +24,6 @@ namespace SimpleDialogs.Controls
             set => SetValue(ShowCopyToClipboardButtonProperty, value);
         }
 
-        public static DependencyProperty NoButtonContentProperty = DependencyProperty.Register(nameof(NoButtonContent), typeof(object), typeof(AlertDialog), new PropertyMetadata("NO"));
-
-        public object NoButtonContent
-        {
-            get => GetValue(NoButtonContentProperty);
-            set => SetValue(NoButtonContentProperty, value);
-        }
-
-        public static DependencyProperty YesButtonContentProperty = DependencyProperty.Register(nameof(YesButtonContent), typeof(object), typeof(AlertDialog), new PropertyMetadata("YES"));
-
-        public object YesButtonContent
-        {
-            get => GetValue(YesButtonContentProperty);
-            set => SetValue(YesButtonContentProperty, value);
-        }
-
         public static DependencyProperty CopyToClipboardButtonContentProperty = DependencyProperty.Register(nameof(CopyToClipboardButtonContent), typeof(object), typeof(AlertDialog), new PropertyMetadata("Copy details to clipboard"));
 
         public object CopyToClipboardButtonContent
@@ -55,8 +31,6 @@ namespace SimpleDialogs.Controls
             get => GetValue(CopyToClipboardButtonContentProperty);
             set => SetValue(CopyToClipboardButtonContentProperty, value);
         }
-
-        
 
         public static DependencyProperty ExceptionProperty = DependencyProperty.Register(nameof(Exception), typeof(Exception), typeof(AlertDialog));
 
@@ -72,7 +46,7 @@ namespace SimpleDialogs.Controls
         {
             CopyToClipboardCommand = new SimpleCommand(() =>
             {
-                Clipboard.SetText(string.Format("Title: {0}\r\nMessage: {1}\r\nException: {2}", Title, Message, Exception == null ? "null" : Exception.ToString()));
+                Clipboard.SetText(string.Format("Title: {0}\r\nMessage: {1}\r\nException: {2}", Title, Content, Exception == null ? "null" : Exception.ToString()));
             });
         }
     }

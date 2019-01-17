@@ -57,11 +57,12 @@
     <Compile Include="Commands\SimpleCommand.cs" />
     <Compile Include="Controls\BaseDialog.cs" />
     <Compile Include="Controls\AlertDialog.cs" />
+    <Compile Include="Controls\DialogClosedEventArgs.cs" />
     <Compile Include="Controls\DialogContainer.cs" />
     <Compile Include="Controls\ProgressDialog.cs" />
     <Compile Include="Controls\ProgressRing.cs" />
     <Compile Include="DialogManager.cs" />
-    <Compile Include="Enumerators\AlertLevel.cs" />
+    <Compile Include="Enumerators\MessageSeverity.cs" />
     <Compile Include="Enumerators\DialogButtonStyle.cs" />
     <Compile Include="Enumerators\DialogResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -77,6 +78,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -107,7 +110,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Dark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DefaultColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Light.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

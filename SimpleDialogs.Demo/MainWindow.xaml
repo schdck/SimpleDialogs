@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:enums="clr-namespace:SimpleDialogs.Demo.Enumerators"
-        xmlns:dialogs="clr-namespace:SimpleDialogs;assembly=SimpleDialogs"
+        xmlns:dialogs="clr-namespace:SimpleDialogs.Controls;assembly=SimpleDialogs"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        dialogs:DialogManager.DefaultDialogContainer="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
         Title="DEMO - SimpleDialogs"
         Height="400"
@@ -78,5 +77,7 @@
             </Hyperlink>
             </TextBlock>
         </StackPanel>
+
+        <dialogs:DialogContainer />
     </Grid>
 </Window>
