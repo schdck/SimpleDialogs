@@ -1,6 +1,8 @@
 ﻿using SimpleDialogs.Commands;
 using SimpleDialogs.Enumerators;
+using SimpleDialogs.Helpers;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,56 +10,58 @@ using System.Windows.Media;
 
 namespace SimpleDialogs.Controls
 {
+    [TemplatePart(Name = "PART_FirstButton", Type = typeof(Button))]
+    [TemplatePart(Name = "PART_SecondButton", Type = typeof(Button))]
+    [TemplatePart(Name = "PART_ThirdButton", Type = typeof(Button))]
     public abstract class BaseDialog : ContentControl
     {
-        private static DependencyPropertyKey IsOpenPropertyKey =
-            DependencyProperty.RegisterAttachedReadOnly(nameof(IsOpen), typeof(bool), typeof(BaseDialog), new PropertyMetadata(false));
+        public static readonly DependencyProperty AlternativeForegroundProperty = DependencyProperty.Register(nameof(AlternativeForeground), typeof(Brush), typeof(BaseDialog));
 
-        public static DependencyProperty AlternativeForegroundProperty =
-            DependencyProperty.Register(nameof(AlternativeForeground), typeof(Brush), typeof(BaseDialog));
+        public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(nameof(TitleFontSize), typeof(double), typeof(BaseDialog));
+        public static readonly DependencyProperty TitleFontWeightProperty = DependencyProperty.Register(nameof(TitleFontWeight), typeof(FontWeight), typeof(BaseDialog));
+        public static readonly DependencyProperty TitleFontFamilyProperty = DependencyProperty.Register(nameof(TitleFontFamily), typeof(FontFamily), typeof(BaseDialog));
+        public static readonly DependencyProperty TitleAlignmentProperty = DependencyProperty.Register(nameof(TitleAlignment), typeof(TextAlignment), typeof(BaseDialog));
+        public static readonly DependencyProperty TitleForegroundProperty = DependencyProperty.Register(nameof(TitleForeground), typeof(Brush), typeof(BaseDialog));
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string), typeof(BaseDialog));
 
-        public static DependencyProperty TitleAlignmentProperty =
-            DependencyProperty.Register(nameof(TitleAlignment), typeof(TextAlignment), typeof(BaseDialog));
+        public static readonly DependencyProperty ShowOverlayProperty = DependencyProperty.Register(nameof(ShowOverlay), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
+        public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register(nameof(CanClose), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
 
-        public static DependencyProperty TitleForegroundProperty =
-            DependencyProperty.Register(nameof(TitleForeground), typeof(Brush), typeof(BaseDialog));
+        public static readonly DependencyProperty DialogWidthProperty = DependencyProperty.Register(nameof(DialogWidth), typeof(double), typeof(BaseDialog), new PropertyMetadata(double.NaN));
+        public static readonly DependencyProperty DialogHeightProperty = DependencyProperty.Register(nameof(DialogHeight), typeof(double), typeof(BaseDialog), new PropertyMetadata(double.NaN));
+        public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(nameof(TitleBarHeight), typeof(double), typeof(BaseDialog));
 
-        public static DependencyProperty TitleProperty =
-            DependencyProperty.Register(nameof(Title), typeof(string), typeof(BaseDialog));
-
-        public static DependencyProperty PrimaryButtonContentProperty = 
-            DependencyProperty.Register(nameof(PrimaryButtonContent), typeof(string), typeof(BaseDialog), new PropertyMetadata("OK"));
-
-        public static DependencyProperty AuxiliaryButtonContentProperty = 
-            DependencyProperty.Register(nameof(AuxiliaryButtonContent), typeof(string), typeof(BaseDialog), new PropertyMetadata("CANCEL"));
-
-        public static DependencyProperty CanCloseProperty =
-            DependencyProperty.Register(nameof(CanClose), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
-
-        public static DependencyProperty ShowAuxiliaryButtonProperty = 
-            DependencyProperty.Register(nameof(ShowAuxiliaryButton), typeof(bool), typeof(BaseDialog), new PropertyMetadata(false));
-
-        public static DependencyProperty ShowOverlayProperty = 
-            DependencyProperty.Register(nameof(ShowOverlay), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
-
-        public static DependencyProperty IsOpenProperty =
-            IsOpenPropertyKey.DependencyProperty;
-
-        public static DependencyProperty DialogWidthProperty = 
-            DependencyProperty.Register(nameof(DialogWidth), typeof(double), typeof(BaseDialog), new PropertyMetadata(600d));
-
-        public static DependencyProperty DialogHeightProperty = 
-            DependencyProperty.Register(nameof(DialogHeight), typeof(double), typeof(BaseDialog), new PropertyMetadata(200d));
-
-        public static DependencyProperty ButtonsProperty =
-            DependencyProperty.Register(nameof(Buttons), typeof(UIElement), typeof(BaseDialog));
-
-        public ICommand CloseDialogCommand { get; private set; }
+        public static readonly DependencyProperty ShowFirstButtonProperty = DependencyProperty.Register(nameof(ShowFirstButton), typeof(bool), typeof(MessageDialog), new PropertyMetadata(true));
+        public static readonly DependencyProperty ShowSecondButtonProperty = DependencyProperty.Register(nameof(ShowSecondButton), typeof(bool), typeof(MessageDialog), new PropertyMetadata(false));
+        public static readonly DependencyProperty ShowThirdButtonProperty = DependencyProperty.Register(nameof(ShowThirdButton), typeof(bool), typeof(MessageDialog), new PropertyMetadata(false));
+        public static readonly DependencyProperty FirstButtonContentProperty = DependencyProperty.Register(nameof(FirstButtonContent), typeof(string), typeof(MessageDialog), new PropertyMetadata("OK"));
+        public static readonly DependencyProperty SecondButtonContentProperty = DependencyProperty.Register(nameof(SecondButtonContent), typeof(string), typeof(MessageDialog), new PropertyMetadata("CANCEL"));
+        public static readonly DependencyProperty ThirdButtonContentProperty = DependencyProperty.Register(nameof(ThirdButtonContent), typeof(string), typeof(MessageDialog));
+        public static readonly DependencyProperty AutoFocusedButtonProperty = DependencyProperty.Register(nameof(AutoFocusedButton), typeof(DialogButton), typeof(MessageDialog), new PropertyMetadata(DialogButton.None));
 
         public Brush AlternativeForeground
         {
             get => (Brush)GetValue(AlternativeForegroundProperty);
             set => SetValue(AlternativeForegroundProperty, value);
+        }
+
+        public double TitleFontSize
+        {
+            get => (double)GetValue(FontSizeProperty);
+            set => SetValue(FontSizeProperty, value);
+        }
+
+        public FontWeight TitleFontWeight
+        {
+            get => (FontWeight)GetValue(TitleFontWeightProperty);
+            set => SetValue(TitleFontWeightProperty, value);
+        }
+
+        public FontFamily TitleFontFamily
+        {
+            get => (FontFamily)GetValue(TitleFontFamilyProperty);
+            set => SetValue(TitleFontFamilyProperty, value);
         }
 
         public TextAlignment TitleAlignment
@@ -78,28 +82,10 @@ namespace SimpleDialogs.Controls
             set => SetValue(TitleProperty, value);
         }
 
-        public string PrimaryButtonContent
-        {
-            get => (string)GetValue(PrimaryButtonContentProperty);
-            set => SetValue(PrimaryButtonContentProperty, value);
-        }
-
-        public string AuxiliaryButtonContent
-        {
-            get => (string)GetValue(AuxiliaryButtonContentProperty);
-            set => SetValue(AuxiliaryButtonContentProperty, value);
-        }
-
         public bool CanClose
         {
             get => (bool)GetValue(CanCloseProperty);
             set => SetValue(CanCloseProperty, value);
-        }
-
-        public bool ShowAuxiliaryButton
-        {
-            get => (bool)GetValue(ShowAuxiliaryButtonProperty);
-            set => SetValue(ShowAuxiliaryButtonProperty, value);
         }
 
         public bool ShowOverlay
@@ -111,7 +97,7 @@ namespace SimpleDialogs.Controls
         public bool IsOpen
         {
             get => (bool)GetValue(IsOpenProperty);
-            private set => SetValue(IsOpenPropertyKey, value);
+            set => SetValue(IsOpenProperty, value);
         }
 
         public double DialogWidth
@@ -126,32 +112,125 @@ namespace SimpleDialogs.Controls
             set => SetValue(DialogHeightProperty, value);
         }
 
-        public UIElement Buttons
+        public double TitleBarHeight
         {
-            get => (UIElement)GetValue(ButtonsProperty);
-            set => SetValue(ButtonsProperty, value);
+            get => (double)GetValue(TitleBarHeightProperty);
+            set => SetValue(TitleBarHeightProperty, value);
         }
 
-        public event EventHandler<DialogClosedEventArgs> DialogClosed;
+        public bool ShowFirstButton
+        {
+            get => (bool)GetValue(ShowFirstButtonProperty);
+            set => SetValue(ShowFirstButtonProperty, value);
+        }
+
+        public bool ShowSecondButton
+        {
+            get => (bool)GetValue(ShowSecondButtonProperty);
+            set => SetValue(ShowSecondButtonProperty, value);
+        }
+
+        public bool ShowThirdButton
+        {
+            get => (bool)GetValue(ShowThirdButtonProperty);
+            set => SetValue(ShowThirdButtonProperty, value);
+        }
+
+        public string FirstButtonContent
+        {
+            get => (string)GetValue(FirstButtonContentProperty);
+            set => SetValue(FirstButtonContentProperty, value);
+        }
+
+        public string SecondButtonContent
+        {
+            get => (string)GetValue(SecondButtonContentProperty);
+            set => SetValue(SecondButtonContentProperty, value);
+        }
+
+        public string ThirdButtonContent
+        {
+            get => (string)GetValue(ThirdButtonContentProperty);
+            set => SetValue(ThirdButtonContentProperty, value);
+        }
+
+        public DialogButton AutoFocusedButton
+        {
+            get => (DialogButton)GetValue(AutoFocusedButtonProperty);
+            set => SetValue(AutoFocusedButtonProperty, value);
+        }
+
+        public event EventHandler<DialogClosingEventArgs> Closing;
+        public event EventHandler<DialogClosedEventArgs> Closed;
 
         public BaseDialog()
         {
-            CloseDialogCommand = new SimpleCommand<DialogResult>(x =>
+            Loaded += HandleInitializedEvent;
+        }
+
+        public void Close()
+        {
+            CloseDialogWithResult(DialogButton.None);
+        }
+
+        internal void CloseDialogWithResult(DialogButton result)
+        {
+            var closingEventArgs = new DialogClosingEventArgs(result);
+
+            Closing?.Invoke(this, closingEventArgs);
+
+            if(!closingEventArgs.Cancel)
             {
-                DialogManager.CloseDialog(this, x);
-            });
-        }
-        
-        internal void Show()
-        {
-            IsOpen = true;
+                DialogManager.CloseDialog(this, result);
+
+                Closed?.Invoke(this, new DialogClosedEventArgs(result));
+            }
         }
 
-        internal void Close(DialogResult result)
+        private void HandleInitializedEvent(object sender, EventArgs eargs)
         {
-            IsOpen = false;
+            Button first = GetTemplateChild("PART_FirstButton") as Button,
+                   second = GetTemplateChild("PART_SecondButton") as Button,
+                   third = GetTemplateChild("PART_ThirdButton") as Button;
 
-            DialogClosed?.Invoke(this, new DialogClosedEventArgs(result));
+            first.Click += (s, e) =>
+            {
+                if (CanClose)
+                {
+                    CloseDialogWithResult(DialogButton.FirstButton);
+                }
+            };
+
+            second.Click += (s, e) =>
+            {
+                if (CanClose)
+                {
+                    CloseDialogWithResult(DialogButton.SecondButton);
+                }
+            };
+
+            third.Click += (s, e) =>
+            {
+                if(CanClose)
+                {
+                    CloseDialogWithResult(DialogButton.ThirdButton);
+                }
+            };
+
+            switch (AutoFocusedButton)
+            {
+                case DialogButton.FirstButton:
+                    KeyboardHelper.Focus(first);
+                    break;
+
+                case DialogButton.SecondButton:
+                    KeyboardHelper.Focus(second);
+                    break;
+
+                case DialogButton.ThirdButton:
+                    KeyboardHelper.Focus(third);
+                    break;
+            }
         }
     }
 }

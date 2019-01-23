@@ -37,10 +37,10 @@ namespace SimpleDialogs
 
         public static void CloseDialog(BaseDialog dialog)
         {
-            CloseDialog(dialog, DialogResult.None);
+            CloseDialog(dialog, DialogButton.None);
         }
 
-        internal static void CloseDialog(BaseDialog dialog, DialogResult result)
+        internal static void CloseDialog(BaseDialog dialog, DialogButton result)
         {
             foreach (var listener in _Listeners)
             {

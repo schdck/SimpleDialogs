@@ -1,19 +1,41 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<dialogs:BaseDialog x:Class="SimpleDialogs.Controls.ProgressDialog"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dialogs="clr-namespace:SimpleDialogs.Controls"
-                    xmlns:enums="clr-namespace:SimpleDialogs.Enumerators"
                     xmlns:converters="clr-namespace:SimpleDialogs.ValueConverters">
+    <dialogs:BaseDialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/SquareButtonStyle.xaml" />
+                <ResourceDictionary Source="ProgressRing.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Resources/SquareButtonStyle.xaml" />
-        <ResourceDictionary Source="ProgressRing.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityInverseConverter"
+                                                  TrueValue="Collapsed"
+                                                  FalseValue="Visible" />
 
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    
-    <ControlTemplate x:Key="ProgressDialogTemplate"
-                     TargetType="dialogs:ProgressDialog">
-        <Grid DataContext="{Binding CurrentDialog, RelativeSource={RelativeSource AncestorType=dialogs:DialogContainer}}">
+            <converters:PercentageConverter x:Key="PercentageConverter" />
+        </ResourceDictionary>
+    </dialogs:BaseDialog.Resources>
+
+    <DockPanel>
+        <Rectangle DockPanel.Dock="Top"
+                   HorizontalAlignment="Left"
+                   Margin="0 -1 0 0"
+                   Height="5"
+                   Visibility="{Binding IsUndefined, Converter={StaticResource BoolToVisibilityInverseConverter}}"
+                   Fill="{Binding Foreground}">
+            <Rectangle.Width>
+                <MultiBinding Converter="{StaticResource PercentageConverter}">
+                    <Binding Path="Progress"
+                             RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=dialogs:ProgressDialog}" />
+                    <Binding Path="ActualWidth"
+                             RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DockPanel}" />
+                </MultiBinding>
+            </Rectangle.Width>
+        </Rectangle>
+
+        <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="3*" />
@@ -22,7 +44,7 @@
             <ContentControl Grid.Column="0"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Foreground="{TemplateBinding Foreground}"
+                            Foreground="{Binding Foreground}"
                             Width="75"
                             Height="75">
 
@@ -58,76 +80,8 @@
                            TextAlignment="Justify"
                            TextWrapping="Wrap"
                            Foreground="{DynamicResource SimpleDialogBestForegroundForBackground}"
-                           Text="{Binding Content}" />
+                           Text="{Binding Message}" />
             </ScrollViewer>
         </Grid>
-    </ControlTemplate>
-
-    <Style TargetType="dialogs:ProgressDialog">
-        <Setter Property="Buttons">
-            <Setter.Value>
-                <StackPanel DockPanel.Dock="Bottom"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            Margin="0 5">
-                    
-                    <Button Style="{StaticResource DialogSquareButtonStyle}"
-                            Content="{Binding AuxiliaryButtonContent}"
-                            Visibility="{Binding ShowAuxiliaryButton, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Command="{Binding CloseDialogCommand}"
-                            CommandParameter="{x:Static enums:DialogResult.AuxiliaryButton}"
-                            IsEnabled="{Binding CanClose}"
-                            MinWidth="120" />
-
-                    <Button Margin="5 0"
-                            Content="{Binding PrimaryButtonContent}"
-                            Command="{Binding CloseDialogCommand}"
-                            CommandParameter="{x:Static enums:DialogResult.PrimaryButton}"
-                            IsEnabled="{Binding CanClose}"
-                            MinWidth="120">
-                        <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{StaticResource DialogBaseSquareButtonStyle}">
-                                <Setter Property="Background"
-                                        Value="{Binding Foreground}" />
-
-                                <Setter Property="Foreground"
-                                        Value="{Binding CurrentDialog.TitleForeground, RelativeSource={RelativeSource AncestorType=dialogs:DialogContainer}}" />
-
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="{Binding CurrentDialog.AlternativeForeground, RelativeSource={RelativeSource AncestorType=dialogs:DialogContainer}}" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                </StackPanel>
-            </Setter.Value>
-        </Setter>
-        
-        <Setter Property="Foreground"
-                Value="LightSteelBlue" />
-
-        <Setter Property="BorderThickness"
-                Value="1" />
-
-        <Setter Property="Template"
-                Value="{StaticResource ProgressDialogTemplate}" />
-
-        <Setter Property="BorderBrush"
-                Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
-
-        <Setter Property="Foreground"
-                Value="{DynamicResource SimpleDialogProgressBrush}" />
-        
-        <Setter Property="AlternativeForeground"
-                Value="{DynamicResource SimpleDialogProgressAlternativeBrush}" />
-        
-        <Setter Property="TitleForeground"
-                Value="{DynamicResource SimpleDialogBestForegroundForProgress}" />
-    </Style>
-
-</ResourceDictionary>
+    </DockPanel>
+</dialogs:BaseDialog>

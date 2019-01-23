@@ -4,10 +4,6 @@
                     xmlns:enums="clr-namespace:SimpleDialogs.Enumerators"
                     xmlns:converters="clr-namespace:SimpleDialogs.ValueConverters">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="AlertDialog.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -23,39 +19,7 @@
                               Background="Gray"
                               Visibility="{Binding ShowOverlay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                        <Border Visibility="{Binding IsOpen, Converter={StaticResource BoolToVisibilityConverter}}"
-                                BorderBrush="{Binding BorderBrush}"
-                                BorderThickness="{Binding BorderThickness}"
-                                Width="{Binding DialogWidth}"
-                                Height="{Binding DialogHeight}"
-                                VerticalAlignment="{Binding VerticalAlignment}"
-                                HorizontalAlignment="{Binding HorizontalAlignment}"
-                                ClipToBounds="{Binding ClipToBounds}"
-                                Background="{DynamicResource SimpleDialogBackground}"
-                                Margin="{Binding Padding}">
-
-                            <DockPanel>
-                                <Grid DockPanel.Dock="Top"
-                                      Height="25"
-                                      VerticalAlignment="Top"
-                                      Background="{Binding Foreground}">
-
-                                    <TextBlock Margin="5 0"
-                                               VerticalAlignment="Center"
-                                               TextAlignment="{Binding TitleAlignment}"
-                                               Foreground="{Binding TitleForeground}"
-                                               Text="{Binding Title}"
-                                               FontWeight="SemiBold" />
-                                </Grid>
-
-                                <ContentPresenter DockPanel.Dock="Bottom"
-                                                  HorizontalAlignment="Right"
-                                                  Content="{Binding Buttons}" />
-
-                                <ContentPresenter DockPanel.Dock="Bottom"
-                                                  Content="{Binding}" />
-                            </DockPanel>
-                        </Border>
+                        <ContentPresenter Content="{Binding}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

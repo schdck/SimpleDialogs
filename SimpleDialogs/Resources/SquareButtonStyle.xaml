@@ -41,6 +41,7 @@
                                    Opacity="0" />
 
                         <ContentControl x:Name="PART_ContentPresenter"
+                                        IsTabStop="False"
                                         Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

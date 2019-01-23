@@ -1,0 +1,148 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dialogs="clr-namespace:SimpleDialogs.Controls"
+                    xmlns:converters="clr-namespace:SimpleDialogs.ValueConverters">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Resources/SquareButtonStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityAlternativeConverter"
+                                          FalseValue="Collapsed" />
+
+    <ControlTemplate x:Key="BaseDialogTemplate"
+                     TargetType="dialogs:BaseDialog">
+
+        <Border Visibility="{TemplateBinding IsOpen, Converter={StaticResource BoolToVisibilityConverter}}"
+                Width="{TemplateBinding DialogWidth}"
+                Height="{TemplateBinding DialogHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" 
+                      Height="{TemplateBinding TitleBarHeight}"
+                      Background="{TemplateBinding Foreground}">
+                    <TextBlock Margin="5 0"
+                               VerticalAlignment="Center"
+                               FontFamily="{TemplateBinding TitleFontFamily}"
+                               FontSize="{TemplateBinding TitleFontSize}"
+                               FontWeight="{TemplateBinding TitleFontWeight}"
+                               TextAlignment="{TemplateBinding TitleAlignment}"
+                               Foreground="{TemplateBinding TitleForeground}"
+                               Text="{TemplateBinding Title}" />
+                </Grid>
+
+                <StackPanel DockPanel.Dock="Bottom"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0 5">
+                    <Button x:Name="PART_ThirdButton"
+                            Style="{StaticResource DialogSquareButtonStyle}"
+                            Content="{Binding ThirdButtonContent}"
+                            Visibility="{Binding ShowThirdButton, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
+                            MinWidth="120" />
+
+                    <Button x:Name="PART_SecondButton"
+                            Margin="5 0 0 0"
+                            Style="{StaticResource DialogSquareButtonStyle}"
+                            Content="{Binding SecondButtonContent}"
+                            Visibility="{Binding ShowSecondButton, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
+                            IsEnabled="{Binding CanClose}"
+                            MinWidth="120" />
+
+                    <Button x:Name="PART_FirstButton"
+                            Margin="5 0"
+                            Content="{Binding FirstButtonContent}"
+                            Visibility="{Binding ShowFirstButton, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
+                            IsEnabled="{Binding CanClose}"
+                            MinWidth="120">
+                        <Button.Style>
+                            <Style TargetType="Button"
+                                   BasedOn="{StaticResource DialogSquareButtonStyle}">
+                                <Setter Property="Background"
+                                        Value="{Binding Foreground}" />
+
+                                <Setter Property="Foreground"
+                                        Value="{Binding TitleForeground}" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="{Binding AlternativeForeground}" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="{DynamicResource SimpleDialogBestForegroundForBackground}" />
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource SimpleDialogBackgroundAlternative}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+
+                <ContentPresenter DockPanel.Dock="Bottom"
+                                  Margin="{TemplateBinding Padding}"
+                                  Content="{Binding Content}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+            </DockPanel>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="BaseDialogStyle"
+           TargetType="dialogs:BaseDialog">
+        <Setter Property="TitleForeground"
+                Value="White" />
+
+        <Setter Property="TitleAlignment"
+                Value="Center" />
+
+        <Setter Property="ShowOverlay"
+                Value="True" />
+
+        <Setter Property="DialogWidth"
+                Value="600" />
+
+        <Setter Property="DialogHeight"
+                Value="200" />
+
+        <Setter Property="BorderThickness"
+                Value="2 0 2 2" />
+
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+
+        <Setter Property="Foreground"
+                Value="Gray" />
+
+        <Setter Property="TitleFontSize"
+                Value="16" />
+
+        <Setter Property="TitleFontWeight"
+                Value="SemiBold" />
+
+        <Setter Property="TitleBarHeight"
+                Value="30" />
+
+        <Setter Property="BorderBrush"
+                Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
+
+        <Setter Property="Template"
+                Value="{StaticResource BaseDialogTemplate}" />
+
+        <Setter Property="Background"
+                Value="{DynamicResource SimpleDialogBackground}" />
+    </Style>
+</ResourceDictionary>

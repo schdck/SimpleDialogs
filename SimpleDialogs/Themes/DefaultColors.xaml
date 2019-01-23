@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="SimpleDialogProgressBrush"
-                     Color="#FF00B5FF" />
+                     Color="#FF77D7FF" />
 
     <SolidColorBrush x:Key="SimpleDialogProgressAlternativeBrush"
-                     Color="#FF77D7FF" />
+                     Color="#FF00B5FF" />
 
     <SolidColorBrush x:Key="SimpleDialogBestForegroundForProgress"
                      Color="Black" />

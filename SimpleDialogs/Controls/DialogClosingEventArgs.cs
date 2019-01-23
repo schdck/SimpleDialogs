@@ -1,12 +1,13 @@
 ﻿using SimpleDialogs.Enumerators;
+using System.ComponentModel;
 
 namespace SimpleDialogs.Controls
 {
-    public class DialogClosedEventArgs
+    public class DialogClosingEventArgs : CancelEventArgs
     {
         public DialogButton Result { get; }
 
-        public DialogClosedEventArgs(DialogButton result)
+        public DialogClosingEventArgs(DialogButton result) : base(false)
         {
             Result = result;
         }

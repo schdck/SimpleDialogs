@@ -9,16 +9,16 @@ namespace SimpleDialogs.Controls
 {
     public class DialogContainer : Control
     {
-        private static DependencyPropertyKey CurrentDialogPropertyKey =
+        private static readonly DependencyPropertyKey CurrentDialogPropertyKey =
             DependencyProperty.RegisterReadOnly(nameof(CurrentDialog), typeof(BaseDialog), typeof(DialogContainer), new PropertyMetadata());
 
-        public static DependencyProperty CurrentDialogProperty =
+        public static readonly DependencyProperty CurrentDialogProperty =
             CurrentDialogPropertyKey.DependencyProperty;
 
-        public static DependencyProperty DisplayDialogsFromTypeProperty =
+        public static readonly DependencyProperty DisplayDialogsFromTypeProperty =
             DependencyProperty.Register(nameof(DisplayDialogsFromType), typeof(Type), typeof(DialogContainer), new PropertyMetadata(typeof(object), new PropertyChangedCallback(DisplayDialogsFromTypeChanged)));
 
-        private List<BaseDialog> _VisibleDialogs;
+        private List<BaseDialog> _DisplayedDialogs;
 
         public BaseDialog CurrentDialog
         {
@@ -34,43 +34,39 @@ namespace SimpleDialogs.Controls
 
         public DialogContainer()
         {
-            _VisibleDialogs = new List<BaseDialog>();
+            _DisplayedDialogs = new List<BaseDialog>();
 
             DialogManager.Subscribe(this, typeof(object));
         }
 
         internal void DisplayDialog(BaseDialog dialog)
         {
-            _VisibleDialogs.Add(dialog);
+            _DisplayedDialogs.Add(dialog);
 
             CurrentDialog = dialog;
-
-            dialog.Show();
         }
 
-        internal void CloseDialog(BaseDialog dialog, DialogResult result)
+        internal void CloseDialog(BaseDialog dialog, DialogButton result)
         {
-            for (int i = 0; i < _VisibleDialogs.Count; i++)
+            for (int i = 0; i < _DisplayedDialogs.Count; i++)
             {
-                if (_VisibleDialogs[i] == dialog)
+                if (_DisplayedDialogs[i] == dialog)
                 {
-                    _VisibleDialogs.RemoveAt(i--);
+                    _DisplayedDialogs.RemoveAt(i--);
                 }
             }
 
             if (dialog == CurrentDialog)
             {
-                CurrentDialog = _VisibleDialogs.LastOrDefault();
+                CurrentDialog = _DisplayedDialogs.LastOrDefault();
             }
-
-            dialog.Close(result);
         }
 
         internal void CloseAllDialogs()
         {
             while(CurrentDialog != null)
             {
-                CloseDialog(CurrentDialog, DialogResult.None);
+                CloseDialog(CurrentDialog, DialogButton.None);
             }
         }
 
@@ -82,7 +78,10 @@ namespace SimpleDialogs.Controls
             {
                 DialogManager.Unsubscribe(container);
 
-                DialogManager.Subscribe(container, eventArgs.NewValue as Type);
+                if(eventArgs.NewValue is Type t)
+                {
+                    DialogManager.Subscribe(container, t);
+                }
             }
         }
     }
