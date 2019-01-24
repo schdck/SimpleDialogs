@@ -29,7 +29,7 @@ namespace SimpleDialogs.Controls
         public Type DisplayDialogsFromType
         {
             get => (Type)GetValue(DisplayDialogsFromTypeProperty);
-            private set => SetValue(DisplayDialogsFromTypeProperty, value);
+            set => SetValue(DisplayDialogsFromTypeProperty, value);
         }
 
         public DialogContainer()
