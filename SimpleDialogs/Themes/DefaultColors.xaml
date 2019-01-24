@@ -13,7 +13,7 @@
                      Color="SkyBlue" />
 
     <SolidColorBrush x:Key="SimpleDialogInformationAlternativeBrush"
-                     Color="SkyBlue" />
+                     Color="#FFB4E2F5" />
 
     <SolidColorBrush x:Key="SimpleDialogBestForegroundForInformation"
                      Color="Black" />

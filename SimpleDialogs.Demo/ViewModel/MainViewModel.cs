@@ -93,6 +93,7 @@ namespace SimpleDialogs.Demo.ViewModel
                         case DialogStyle.InformationDialog:
                             dialog.MessageSeverity = MessageSeverity.Information;
                             dialog.Message = "Move along.\n\nNothing to see here.";
+                            dialog.SecondsToAutoClose = 3;
                             break;
 
                         case DialogStyle.SuccessDialog:
