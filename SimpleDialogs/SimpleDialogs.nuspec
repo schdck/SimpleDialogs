@@ -6,7 +6,7 @@
     <title>$title$</title>
     <authors>Maurício Schmaedeck</authors>
     <owners>Maurício Schmaedeck</owners>
-    <license type="expression">MIT</license>
+    <licenseUrl>https://github.com/schdck/SimpleDialogs/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/schdck/SimpleDialogs</projectUrl>
     <iconUrl>https://github.com/schdck/SimpleDialogs/blob/master/Docs/logo.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
