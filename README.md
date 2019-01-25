@@ -4,7 +4,8 @@
 
   # SimpleDialogs
   
-  [![license](https://img.shields.io/github/license/schdck/SimpleDialogs.svg)](https://github.com/schdck/SimpleDialogs/blob/master/LICENSE)
+  [![License](https://img.shields.io/github/license/schdck/SimpleDialogs.svg)](https://github.com/schdck/SimpleDialogs/blob/master/LICENSE)
+  [![Build status](https://ci.appveyor.com/api/projects/status/ngnm9ni9rckwg4v4?svg=true)](https://ci.appveyor.com/project/schdck/simpledialogs)
   [![NuGet](https://img.shields.io/nuget/v/SimpleDialogs.svg)](https://www.nuget.org/packages/SimpleDialogs/)
   [![NuGet](https://img.shields.io/nuget/dt/SimpleDialogs.svg)](https://www.nuget.org/packages/SimpleDialogs/)
   [![GitHub issues](https://img.shields.io/github/issues/schdck/SimpleDialogs.svg)](https://github.com/schdck/SimpleDialogs/issues)
