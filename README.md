@@ -33,10 +33,13 @@ You can install SimpleDialogs through [NuGet](https://www.nuget.org/packages/Sim
   
 ... or through NuGet Package Manager directly on your project/solution.
 
-Then just add the following `Resource Dictionary` 
+Then just add one of the following `Resource Dictionary` 
   
 ```XML
-<ResourceDictionary Source="pack://application:,,,/SimpleDialogs;component/Controls/Design/SimpleDialogs.xaml" />
+<!-- LIGHT THEME: -->
+<ResourceDictionary Source="pack://application:,,,/SimpleDialogs;component/Themes/Light.xaml" />
+<!-- DARK THEME: -->
+<ResourceDictionary Source="pack://application:,,,/SimpleDialogs;component/Themes/Dark.xaml" />
 ```
   
 ... to your application resources and you are good to go!
