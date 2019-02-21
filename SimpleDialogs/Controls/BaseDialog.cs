@@ -1,12 +1,9 @@
-﻿using SimpleDialogs.Commands;
-using SimpleDialogs.Enumerators;
+﻿using SimpleDialogs.Enumerators;
 using SimpleDialogs.Helpers;
 using System;
-using System.ComponentModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace SimpleDialogs.Controls
@@ -173,7 +170,7 @@ namespace SimpleDialogs.Controls
             set => SetValue(AutoFocusedButtonProperty, value);
         }
 
-        public event EventHandler<DialogClosingEventArgs> Closing;
+        public event EventHandler<DialogButtonClickedEventArgs> ButtonClicked;
         public event EventHandler<DialogClosedEventArgs> Closed;
 
         public BaseDialog()
@@ -191,25 +188,22 @@ namespace SimpleDialogs.Controls
             Loaded += HandleInitializedEvent;
         }
 
-        public void Close()
+        internal bool CloseDialogWithResult(DialogButton result)
         {
-            CloseDialogWithResult(DialogButton.None);
-        }
+            var closingEventArgs = new DialogButtonClickedEventArgs(result);
 
-        internal void CloseDialogWithResult(DialogButton result)
-        {
-            var closingEventArgs = new DialogClosingEventArgs(result);
+            ButtonClicked?.Invoke(this, closingEventArgs);
 
-            Closing?.Invoke(this, closingEventArgs);
-
-            if (!closingEventArgs.Cancel)
+            if (closingEventArgs.CloseDialogAfterHandle)
             {
                 SecondsToAutoClose = -1;
 
-                DialogManager.CloseDialog(this, result);
-
                 Closed?.Invoke(this, new DialogClosedEventArgs(result));
+
+                return true;
             }
+
+            return false;
         }
 
         private void HandleInitializedEvent(object sender, EventArgs eargs)
@@ -222,7 +216,7 @@ namespace SimpleDialogs.Controls
             {
                 if (CanClose)
                 {
-                    CloseDialogWithResult(DialogButton.FirstButton);
+                    DialogManager.CloseDialog(this, DialogButton.FirstButton);
                 }
             };
 
@@ -230,7 +224,7 @@ namespace SimpleDialogs.Controls
             {
                 if (CanClose)
                 {
-                    CloseDialogWithResult(DialogButton.SecondButton);
+                    DialogManager.CloseDialog(this, DialogButton.SecondButton);
                 }
             };
 
@@ -238,7 +232,7 @@ namespace SimpleDialogs.Controls
             {
                 if (CanClose)
                 {
-                    CloseDialogWithResult(DialogButton.ThirdButton);
+                    DialogManager.CloseDialog(this, DialogButton.ThirdButton);
                 }
             };
 
@@ -268,7 +262,7 @@ namespace SimpleDialogs.Controls
                     AutoFocusedButton == DialogButton.None ? 
                         DialogButton.FirstButton : AutoFocusedButton;
 
-                CloseDialogWithResult(result);
+                DialogManager.CloseDialog(this, result);
             }
             else if (SecondsToAutoClose > 0)
             {

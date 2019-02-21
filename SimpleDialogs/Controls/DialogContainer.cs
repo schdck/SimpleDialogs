@@ -1,5 +1,4 @@
-﻿using SimpleDialogs.Enumerators;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -41,33 +40,31 @@ namespace SimpleDialogs.Controls
 
         internal void DisplayDialog(BaseDialog dialog)
         {
-            _DisplayedDialogs.Add(dialog);
+            Dispatcher.Invoke(() =>
+            {
+                _DisplayedDialogs.Add(dialog);
 
-            CurrentDialog = dialog;
+                CurrentDialog = dialog;
+            });
         }
 
-        internal void CloseDialog(BaseDialog dialog, DialogButton result)
+        internal void RemoveDialog(BaseDialog dialog)
         {
-            for (int i = 0; i < _DisplayedDialogs.Count; i++)
+            Dispatcher.Invoke(() =>
             {
-                if (_DisplayedDialogs[i] == dialog)
+                for (int i = 0; i < _DisplayedDialogs.Count; i++)
                 {
-                    _DisplayedDialogs.RemoveAt(i--);
+                    if (_DisplayedDialogs[i] == dialog)
+                    {
+                        _DisplayedDialogs.RemoveAt(i--);
+                    }
                 }
-            }
 
-            if (dialog == CurrentDialog)
-            {
-                CurrentDialog = _DisplayedDialogs.LastOrDefault();
-            }
-        }
-
-        internal void CloseAllDialogs()
-        {
-            while(CurrentDialog != null)
-            {
-                CloseDialog(CurrentDialog, DialogButton.None);
-            }
+                if (dialog == CurrentDialog)
+                {
+                    CurrentDialog = _DisplayedDialogs.LastOrDefault();
+                }
+            });
         }
 
         private static void DisplayDialogsFromTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)

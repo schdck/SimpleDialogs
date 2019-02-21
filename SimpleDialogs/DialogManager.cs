@@ -2,9 +2,6 @@
 using SimpleDialogs.Enumerators;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace SimpleDialogs
 {
@@ -42,17 +39,12 @@ namespace SimpleDialogs
 
         internal static void CloseDialog(BaseDialog dialog, DialogButton result)
         {
-            foreach (var listener in _Listeners)
+            if(dialog.CloseDialogWithResult(result))
             {
-                listener.Item1.CloseDialog(dialog, result);
-            }
-        }
-
-        public static void CloseAllDialogs()
-        {
-            foreach (var listener in _Listeners)
-            {
-                listener.Item1.CloseAllDialogs();
+                foreach (var listener in _Listeners)
+                {
+                    listener.Item1.RemoveDialog(dialog);
+                }
             }
         }
     }

@@ -86,7 +86,7 @@ namespace SimpleDialogs.Demo.ViewModel
                     };
 
                     dialog.Closed += DialogClosed;
-                    dialog.Closing += DialogClosing;
+                    dialog.ButtonClicked += DialogButtonClicked;
 
                     switch (dialogType)
                     {
@@ -137,15 +137,15 @@ namespace SimpleDialogs.Demo.ViewModel
             });
         }
 
-        private void DialogClosing(object sender, DialogClosingEventArgs e)
+        private void DialogButtonClicked(object sender, DialogButtonClickedEventArgs e)
         {
             // Since the only third button we have in this demo is to copy to clipboard
             // We will prevent the dialog from closing when the user select this option
-            if(e.Result == DialogButton.ThirdButton && sender is MessageDialog dialog)
+            if(e.Button == DialogButton.ThirdButton && sender is MessageDialog dialog)
             {
                 Clipboard.SetText($"Title: {dialog.Title}\r\nMessage: {dialog.Message}\r\nException: {(dialog.Exception?.ToString() ?? "null")}");
 
-                e.Cancel = true;
+                e.CloseDialogAfterHandle = false;
             }
         }
 
