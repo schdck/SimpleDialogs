@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Commands\SimpleCommand.cs" />
     <Compile Include="Controls\BaseDialog.cs" />
-    <Compile Include="Controls\DialogClosingEventArgs.cs" />
+    <Compile Include="Controls\DialogButtonClickedEventArgs.cs" />
     <Compile Include="Controls\MessageDialog.cs" />
     <Compile Include="Controls\DialogClosedEventArgs.cs" />
     <Compile Include="Controls\DialogContainer.cs" />
