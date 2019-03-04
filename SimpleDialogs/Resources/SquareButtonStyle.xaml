@@ -13,6 +13,8 @@
                 Value="{DynamicResource SimpleDialogBestForegroundForBackground}" />
         <Setter Property="BorderThickness"
                 Value="2" />
+        <Setter Property="FontSize"
+                Value="14" />
         <Setter Property="FontWeight"
                 Value="SemiBold" />
         <Setter Property="MinHeight"
