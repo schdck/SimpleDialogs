@@ -1,6 +1,4 @@
-﻿using SimpleDialogs.Enumerators;
-using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace SimpleDialogs.Controls
 {

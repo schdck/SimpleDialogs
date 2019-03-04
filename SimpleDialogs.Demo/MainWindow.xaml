@@ -12,22 +12,29 @@
         Width="800"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Grid>
-        <TextBlock Text="{Binding DialogResult, StringFormat='Dialog result: {0}'}"
+        <TextBlock Text="{Binding DialogClickedButton, StringFormat='Clicked button: {0}', TargetNullValue='Clicked button: (null)'}"
                    VerticalAlignment="Top"
-                   Margin="10"
+                   Margin="10 5"
+                   HorizontalAlignment="Center"
+                   FontSize="24" />
+
+        <TextBlock Text="{Binding DialogResult, StringFormat='Dialog result: {0}', TargetNullValue='Dialog result: (null)'}"
+                   VerticalAlignment="Top"
+                   Margin="10 35 10 10"
                    HorizontalAlignment="Center"
                    FontSize="24" />
 
         <WrapPanel Orientation="Horizontal"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"
+                   Width="600"
                    Margin="30">
             <WrapPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Margin"
                             Value="3" />
                     <Setter Property="Width"
-                            Value="160" />
+                            Value="194" />
                 </Style>
             </WrapPanel.Resources>
 
@@ -55,6 +62,9 @@
             <Button Content="Alert (with exception)"
                     Command="{Binding ShowDialogCommand}"
                     CommandParameter="{x:Static enums:DialogStyle.ExceptionDialog}" />
+            <Button Content="Input dialog"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="{x:Static enums:DialogStyle.InputDialog}" />
         </WrapPanel>
 
         <StackPanel VerticalAlignment="Bottom"

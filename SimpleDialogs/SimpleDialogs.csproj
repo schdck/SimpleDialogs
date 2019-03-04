@@ -57,6 +57,7 @@
     <Compile Include="Commands\SimpleCommand.cs" />
     <Compile Include="Controls\BaseDialog.cs" />
     <Compile Include="Controls\DialogButtonClickedEventArgs.cs" />
+    <Compile Include="Controls\InputDialog.cs" />
     <Compile Include="Controls\MessageDialog.cs" />
     <Compile Include="Controls\DialogClosedEventArgs.cs" />
     <Compile Include="Controls\DialogContainer.cs" />
@@ -93,6 +94,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Design\InputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Design\MessageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

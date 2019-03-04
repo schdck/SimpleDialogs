@@ -39,7 +39,7 @@ namespace SimpleDialogs
 
         internal static void CloseDialog(BaseDialog dialog, DialogButton result)
         {
-            if(dialog.CloseDialogWithResult(result))
+            if(dialog.StartToCloseDialog(result))
             {
                 foreach (var listener in _Listeners)
                 {

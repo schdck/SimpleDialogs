@@ -1,0 +1,55 @@
+﻿<dialogs:BaseDialog x:Class="SimpleDialogs.Controls.InputDialog"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dialogs="clr-namespace:SimpleDialogs.Controls">
+
+    <DockPanel LastChildFill="False"
+               Margin="{Binding Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:BaseDialog}}"
+               VerticalAlignment="Center">
+
+        <Grid DockPanel.Dock="Bottom"
+              Margin="5 0">
+            <TextBox x:Name="PART_TextBox"
+                     Padding="5"
+                     FontSize="{Binding FontSize}"
+                     Text="{Binding Text}" />
+
+            <TextBlock VerticalAlignment="Center"
+                       IsHitTestVisible="False"
+                       Foreground="DarkGray"
+                       Margin="7 0"
+                       FontSize="{Binding FontSize}"
+                       Text="{Binding Watermark}">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=PART_TextBox}"
+                                         Value="">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+
+        <ScrollViewer DockPanel.Dock="Top"
+                      Margin="5"
+                      VerticalScrollBarVisibility="Auto">
+            <TextBlock Margin="0 0 10 0"
+                       VerticalAlignment="Center"
+                       TextAlignment="Justify"
+                       TextWrapping="Wrap"
+                       FontStyle="{Binding FontStyle}"
+                       FontStretch="{Binding FontStretch}"
+                       FontSize="{Binding FontSize}"
+                       FontFamily="{Binding FontFamily}"
+                       FontWeight="{Binding FontWeight}"
+                       Foreground="{DynamicResource SimpleDialogBestForegroundForBackground}"
+                       Text="{Binding Description}" />
+        </ScrollViewer>
+    </DockPanel>
+</dialogs:BaseDialog>

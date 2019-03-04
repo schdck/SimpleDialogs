@@ -13,6 +13,8 @@ namespace SimpleDialogs.Controls
     [TemplatePart(Name = "PART_ThirdButton", Type = typeof(Button))]
     public abstract class BaseDialog : ContentControl
     {
+        private static readonly DependencyPropertyKey IsClosedPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsClosed), typeof(bool), typeof(BaseDialog), new PropertyMetadata(false));
+
         public static readonly DependencyProperty AlternativeForegroundProperty = DependencyProperty.Register(nameof(AlternativeForeground), typeof(Brush), typeof(BaseDialog));
 
         public static readonly DependencyProperty TitleFontSizeProperty = DependencyProperty.Register(nameof(TitleFontSize), typeof(double), typeof(BaseDialog));
@@ -24,10 +26,10 @@ namespace SimpleDialogs.Controls
 
         public static readonly DependencyProperty SecondsToAutoCloseProperty = DependencyProperty.Register(nameof(SecondsToAutoClose), typeof(int), typeof(BaseDialog), new PropertyMetadata(-1, DependencyPropertyChanged));
         public static readonly DependencyProperty ShowOverlayProperty = DependencyProperty.Register(nameof(ShowOverlay), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
-        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsClosedProperty = IsClosedPropertyKey.DependencyProperty;
         public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register(nameof(CanClose), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
 
-        public static readonly DependencyProperty DialogWidthProperty = DependencyProperty.Register(nameof(DialogWidth), typeof(double), typeof(BaseDialog), new PropertyMetadata(double.NaN));
+        public static readonly DependencyProperty DialogWidthProperty = DependencyProperty.Register(nameof(DialogWidth), typeof(double), typeof(BaseDialog), new PropertyMetadata(500d));
         public static readonly DependencyProperty DialogHeightProperty = DependencyProperty.Register(nameof(DialogHeight), typeof(double), typeof(BaseDialog), new PropertyMetadata(double.NaN));
         public static readonly DependencyProperty TitleBarHeightProperty = DependencyProperty.Register(nameof(TitleBarHeight), typeof(double), typeof(BaseDialog));
 
@@ -39,6 +41,7 @@ namespace SimpleDialogs.Controls
         public static readonly DependencyProperty ThirdButtonContentProperty = DependencyProperty.Register(nameof(ThirdButtonContent), typeof(string), typeof(MessageDialog), new PropertyMetadata(null));
         public static readonly DependencyProperty AutoFocusedButtonProperty = DependencyProperty.Register(nameof(AutoFocusedButton), typeof(DialogButton), typeof(MessageDialog), new PropertyMetadata(DialogButton.None, DependencyPropertyChanged));
 
+        private bool _InitializedButtons;
         private Timer _AutoCloseTimer;
         private Button _FirstButton;
         private Button _SecondButton;
@@ -92,22 +95,22 @@ namespace SimpleDialogs.Controls
             set => SetValue(SecondsToAutoCloseProperty, value);
         }
 
-        public bool CanClose
-        {
-            get => (bool)GetValue(CanCloseProperty);
-            set => SetValue(CanCloseProperty, value);
-        }
-
         public bool ShowOverlay
         {
             get => (bool)GetValue(ShowOverlayProperty);
             set => SetValue(ShowOverlayProperty, value);
         }
 
-        public bool IsOpen
+        public bool IsClosed
         {
-            get => (bool)GetValue(IsOpenProperty);
-            set => SetValue(IsOpenProperty, value);
+            get => (bool)GetValue(IsClosedProperty);
+            private set => SetValue(IsClosedPropertyKey, value);
+        }
+
+        public bool CanClose
+        {
+            get => (bool)GetValue(CanCloseProperty);
+            set => SetValue(CanCloseProperty, value);
         }
 
         public double DialogWidth
@@ -185,56 +188,72 @@ namespace SimpleDialogs.Controls
                 SecondsToAutoClose--;
             });
 
-            Loaded += HandleInitializedEvent;
+            Loaded += HandleLoadedEvent;
         }
 
-        internal bool CloseDialogWithResult(DialogButton result)
+        protected virtual object GetResult()
         {
-            var closingEventArgs = new DialogButtonClickedEventArgs(result);
+            return null;
+        }
+
+        protected void CloseDialog(DialogButton clickedButton)
+        {
+            SecondsToAutoClose = -1;
+            IsClosed = true;
+
+            Closed?.Invoke(this, new DialogClosedEventArgs(clickedButton, GetResult()));
+        }
+
+        protected internal bool StartToCloseDialog(DialogButton clickedButton)
+        {
+            var closingEventArgs = new DialogButtonClickedEventArgs(clickedButton);
 
             ButtonClicked?.Invoke(this, closingEventArgs);
 
             if (closingEventArgs.CloseDialogAfterHandle)
             {
-                SecondsToAutoClose = -1;
-
-                Closed?.Invoke(this, new DialogClosedEventArgs(result));
+                CloseDialog(clickedButton);
 
                 return true;
             }
-
+            
             return false;
         }
 
-        private void HandleInitializedEvent(object sender, EventArgs eargs)
+        private void HandleLoadedEvent(object sender, EventArgs eargs)
         {
-            _FirstButton = GetTemplateChild("PART_FirstButton") as Button;
-            _SecondButton = GetTemplateChild("PART_SecondButton") as Button;
-            _ThirdButton = GetTemplateChild("PART_ThirdButton") as Button;
-
-            _FirstButton.Click += (s, e) =>
+            if(_InitializedButtons == false)
             {
-                if (CanClose)
-                {
-                    DialogManager.CloseDialog(this, DialogButton.FirstButton);
-                }
-            };
+                _InitializedButtons = true;
 
-            _SecondButton.Click += (s, e) =>
-            {
-                if (CanClose)
-                {
-                    DialogManager.CloseDialog(this, DialogButton.SecondButton);
-                }
-            };
+                _FirstButton = GetTemplateChild("PART_FirstButton") as Button;
+                _SecondButton = GetTemplateChild("PART_SecondButton") as Button;
+                _ThirdButton = GetTemplateChild("PART_ThirdButton") as Button;
 
-            _ThirdButton.Click += (s, e) =>
-            {
-                if (CanClose)
+                _FirstButton.Click += (s, e) =>
                 {
-                    DialogManager.CloseDialog(this, DialogButton.ThirdButton);
-                }
-            };
+                    if (CanClose)
+                    {
+                        DialogManager.CloseDialog(this, DialogButton.FirstButton);
+                    }
+                };
+
+                _SecondButton.Click += (s, e) =>
+                {
+                    if (CanClose)
+                    {
+                        DialogManager.CloseDialog(this, DialogButton.SecondButton);
+                    }
+                };
+
+                _ThirdButton.Click += (s, e) =>
+                {
+                    if (CanClose)
+                    {
+                        DialogManager.CloseDialog(this, DialogButton.ThirdButton);
+                    }
+                };
+            }
 
             switch (AutoFocusedButton)
             {
@@ -301,7 +320,7 @@ namespace SimpleDialogs.Controls
         {
             if(sender is BaseDialog dialog)
             {
-                if(e.Property == AutoFocusedButtonProperty)
+                if(e.Property == AutoFocusedButtonProperty && dialog.IsLoaded)
                 {
                     dialog._FirstButton.Content = dialog.FirstButtonContent;
                     dialog._SecondButton.Content = dialog.SecondButtonContent;

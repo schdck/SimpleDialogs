@@ -7,24 +7,29 @@
         <ResourceDictionary Source="../Resources/SquareButtonStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityAlternativeConverter"
                                           FalseValue="Collapsed" />
 
     <ControlTemplate x:Key="BaseDialogTemplate"
                      TargetType="dialogs:BaseDialog">
 
-        <Border Visibility="{TemplateBinding IsOpen, Converter={StaticResource BoolToVisibilityConverter}}"
-                Width="{TemplateBinding DialogWidth}"
+        <Border Width="{TemplateBinding DialogWidth}"
                 Height="{TemplateBinding DialogHeight}"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                MinHeight="200"
+                Focusable="False">
 
-            <DockPanel>
-                <Grid DockPanel.Dock="Top" 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0"
                       Height="{TemplateBinding TitleBarHeight}"
                       Background="{TemplateBinding Foreground}">
                     <TextBlock Margin="5 0"
@@ -37,10 +42,16 @@
                                Text="{TemplateBinding Title}" />
                 </Grid>
 
-                <StackPanel DockPanel.Dock="Bottom"
+                <ContentPresenter Grid.Row="1"
+                                  MinWidth="400"
+                                  Content="{Binding Content}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+
+                <StackPanel Grid.Row="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"
-                            Margin="0 5">
+                            Margin="5">
                     <Button x:Name="PART_ThirdButton"
                             Style="{StaticResource DialogSquareButtonStyle}"
                             Content="{Binding ThirdButtonContent}"
@@ -88,18 +99,15 @@
                         </Button.Style>
                     </Button>
                 </StackPanel>
-
-                <ContentPresenter DockPanel.Dock="Bottom"
-                                  Margin="{TemplateBinding Padding}"
-                                  Content="{Binding Content}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-            </DockPanel>
+            </Grid>
         </Border>
     </ControlTemplate>
 
     <Style x:Key="BaseDialogStyle"
            TargetType="dialogs:BaseDialog">
+        <Setter Property="Focusable"
+                Value="False" />
+
         <Setter Property="TitleForeground"
                 Value="White" />
 
@@ -109,14 +117,14 @@
         <Setter Property="ShowOverlay"
                 Value="True" />
 
-        <Setter Property="DialogWidth"
-                Value="600" />
-
-        <Setter Property="DialogHeight"
-                Value="200" />
-
         <Setter Property="BorderThickness"
-                Value="2 0 2 2" />
+                Value="0 0 0 2" />
+
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+
+        <Setter Property="HorizontalAlignment"
+                Value="Center" />
 
         <Setter Property="VerticalContentAlignment"
                 Value="Stretch" />
@@ -135,6 +143,12 @@
 
         <Setter Property="TitleBarHeight"
                 Value="30" />
+
+        <Setter Property="Padding"
+                Value="10" />
+
+        <Setter Property="Margin"
+                Value="10" />
 
         <Setter Property="BorderBrush"
                 Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />

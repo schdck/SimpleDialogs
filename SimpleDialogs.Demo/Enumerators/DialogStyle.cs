@@ -9,6 +9,7 @@
         WarningDialog,
         ErrorDialog,
         CriticalDialog,
-        ExceptionDialog
+        ExceptionDialog,
+        InputDialog
     }
 }

@@ -4,10 +4,12 @@ namespace SimpleDialogs.Controls
 {
     public class DialogClosedEventArgs
     {
-        public DialogButton Result { get; }
+        public DialogButton ClickedButton { get; }
+        public object Result { get; }
 
-        public DialogClosedEventArgs(DialogButton result)
+        public DialogClosedEventArgs(DialogButton clickedButton, object result)
         {
+            ClickedButton = clickedButton;
             Result = result;
         }
     }

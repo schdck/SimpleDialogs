@@ -4,7 +4,6 @@ using SimpleDialogs.Controls;
 using SimpleDialogs.Demo.Enumerators;
 using SimpleDialogs.Enumerators;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Timers;
 using System.Windows;
@@ -17,6 +16,7 @@ namespace SimpleDialogs.Demo.ViewModel
         public RelayCommand<DialogButton> DialogCloseCommand { get; private set; }
         public RelayCommand<Uri> OpenLinkCommand { get; private set; }
 
+        public string DialogClickedButton { get; private set; }
         public string DialogResult { get; private set; }
 
         public MainViewModel()
@@ -28,7 +28,7 @@ namespace SimpleDialogs.Demo.ViewModel
 
             ShowDialogCommand = new RelayCommand<DialogStyle>((dialogType) =>
             {
-                if(dialogType == DialogStyle.DefinedProgressDialog)
+                if (dialogType == DialogStyle.DefinedProgressDialog)
                 {
                     ProgressDialog dialog = new ProgressDialog()
                     {
@@ -65,13 +65,27 @@ namespace SimpleDialogs.Demo.ViewModel
 
                     t.Start();
                 }
-                else if(dialogType == DialogStyle.UndefinedProgressDialog)
+                else if (dialogType == DialogStyle.UndefinedProgressDialog)
                 {
                     var dialog = new ProgressDialog()
                     {
                         IsUndefined = true,
                         Message = "Please wait...",
                         Title = "Working..."
+                    };
+
+                    dialog.Closed += DialogClosed;
+
+                    DialogManager.ShowDialog(this, dialog);
+                }
+                else if (dialogType == DialogStyle.InputDialog)
+                {
+                    var dialog = new InputDialog()
+                    {
+                        Title = "INPUT DIALOG",
+                        Description = "Please insert any text you want",
+                        Watermark = "My text lalala",
+                        ShowSecondButton = true
                     };
 
                     dialog.Closed += DialogClosed;
@@ -94,6 +108,8 @@ namespace SimpleDialogs.Demo.ViewModel
                             dialog.MessageSeverity = MessageSeverity.Information;
                             dialog.Message = "Move along.\n\nNothing to see here.";
                             dialog.SecondsToAutoClose = 3;
+                            dialog.ShowSecondButton = true;
+                            dialog.AutoFocusedButton = DialogButton.SecondButton;
                             break;
 
                         case DialogStyle.SuccessDialog:
@@ -153,18 +169,20 @@ namespace SimpleDialogs.Demo.ViewModel
         {
             if(sender is BaseDialog dialog)
             {
-                switch(e.Result)
+                DialogResult = e.Result?.ToString();
+
+                switch(e.ClickedButton)
                 {
                     case DialogButton.FirstButton:
-                        DialogResult = $"FirstButton ({dialog.FirstButtonContent})";
+                        DialogClickedButton = $"FirstButton ({dialog.FirstButtonContent})";
                         break;
 
                     case DialogButton.SecondButton:
-                        DialogResult = $"SecondButton ({dialog.SecondButtonContent})";
+                        DialogClickedButton = $"SecondButton ({dialog.SecondButtonContent})";
                         break;
 
                     case DialogButton.ThirdButton:
-                        DialogResult = $"ThirdButton ({dialog.ThirdButtonContent})";
+                        DialogClickedButton = $"ThirdButton ({dialog.ThirdButtonContent})";
                         break;
                 }
             }

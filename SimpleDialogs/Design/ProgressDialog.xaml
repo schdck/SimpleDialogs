@@ -35,7 +35,8 @@
             </Rectangle.Width>
         </Rectangle>
 
-        <Grid DockPanel.Dock="Bottom">
+        <Grid DockPanel.Dock="Bottom"
+              Margin="{Binding Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:BaseDialog}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="3*" />
