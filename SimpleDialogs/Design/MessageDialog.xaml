@@ -57,9 +57,10 @@
         </ResourceDictionary>
     </dialogs:BaseDialog.Resources>
 
-    <Grid>
+    <Grid Margin="{Binding Padding, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dialogs:BaseDialog}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
@@ -67,22 +68,26 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Content="{Binding MessageSeverity}"
-                        ContentTemplateSelector="{StaticResource MessageDialogIconSelector}" />
+                        ContentTemplateSelector="{StaticResource MessageDialogIconSelector}"
+                        Focusable="False" />
 
-        <ScrollViewer Grid.Column="1"
+        <ScrollViewer Grid.Column="2"
                       VerticalScrollBarVisibility="Auto"
                       Margin="5">
-            <TextBlock Margin="0 0 10 0"
-                       VerticalAlignment="Center"
-                       TextAlignment="Justify"
-                       TextWrapping="Wrap"
-                       FontStyle="{Binding FontStyle}"
-                       FontStretch="{Binding FontStretch}"
-                       FontSize="{Binding FontSize}"
-                       FontFamily="{Binding FontFamily}"
-                       FontWeight="{Binding FontWeight}"
-                       Foreground="{DynamicResource SimpleDialogBestForegroundForBackground}"
-                       Text="{Binding Message}" />
+            <TextBox Margin="0 0 10 0"
+                     VerticalAlignment="Center"
+                     TextAlignment="Justify"
+                     TextWrapping="Wrap"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     IsReadOnly="True"
+                     FontStyle="{Binding FontStyle}"
+                     FontStretch="{Binding FontStretch}"
+                     FontSize="{Binding FontSize}"
+                     FontFamily="{Binding FontFamily}"
+                     FontWeight="{Binding FontWeight}"
+                     Foreground="{DynamicResource SimpleDialogBestForegroundForBackground}"
+                     Text="{Binding Message, Mode=OneWay}" />
         </ScrollViewer>
     </Grid>
 </dialogs:BaseDialog>
