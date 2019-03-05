@@ -10,6 +10,7 @@
         <Grid DockPanel.Dock="Bottom"
               Margin="5 0">
             <TextBox x:Name="PART_TextBox"
+                     Style="{x:Null}"
                      Padding="5"
                      FontSize="{Binding FontSize}"
                      Text="{Binding Text}" />

@@ -9,7 +9,7 @@ namespace SimpleDialogs.Controls
         public static readonly DependencyProperty PrimaryButtonContentProperty = DependencyProperty.Register(nameof(PrimaryButtonContent), typeof(string), typeof(ProgressDialog), new PropertyMetadata("OK"));
         public static readonly DependencyProperty ShowAuxiliaryButtonProperty = DependencyProperty.Register(nameof(ShowAuxiliaryButton), typeof(bool), typeof(ProgressDialog), new PropertyMetadata(false));
         public static readonly DependencyProperty AuxiliaryButtonContentProperty = DependencyProperty.Register(nameof(AuxiliaryButtonContent), typeof(string), typeof(ProgressDialog), new PropertyMetadata("CANCEL"));
-        public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(nameof(MessageBox), typeof(string), typeof(ProgressDialog));
+        public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(nameof(Message), typeof(string), typeof(ProgressDialog));
 
         public bool IsUndefined
         {
