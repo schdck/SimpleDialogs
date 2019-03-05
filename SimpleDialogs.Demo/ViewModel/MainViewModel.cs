@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SimpleDialogs.Demo.ViewModel
@@ -23,6 +24,10 @@ namespace SimpleDialogs.Demo.ViewModel
         public string SelectedType { get; set; }
         public MessageSeverity? SelectedSeverity { get; set; }
         public DialogButton? SelectedButton { get; set; }
+
+        public HorizontalAlignment HorizontalAlignment { get; set; }
+        public VerticalAlignment VerticalAlignment { get; set; }
+        public Thickness Margin { get; set; }
 
         public int? SecondsToAutoClose { get; set; }
         public bool ShowOverlay { get; set; } = true;
@@ -219,6 +224,10 @@ namespace SimpleDialogs.Demo.ViewModel
                 dialog.FirstButtonContent = FirstButtonContent;
                 dialog.SecondButtonContent = SecondButtonContent;
                 dialog.ThirdButtonContent = ThirdButtonContent;
+
+                dialog.HorizontalAlignment = HorizontalAlignment;
+                dialog.VerticalAlignment = VerticalAlignment;
+                dialog.Margin = Margin;
 
                 dialog.Closed += DialogClosed;
                 dialog.ButtonClicked += DialogButtonClicked;

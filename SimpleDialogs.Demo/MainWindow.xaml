@@ -39,6 +39,22 @@
                 <x:Type TypeName="enumerators:MessageSeverity" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="HorizontalAlignmentValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="HorizontalAlignment" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="VerticalAlignmentValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="VerticalAlignment" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </controls:MetroWindow.Resources>
 
     <controls:MetroWindow.LeftWindowCommands>
@@ -73,6 +89,17 @@
                         <ComboBox controls:TextBoxHelper.Watermark="Auto focused button"
                                   ItemsSource="{Binding Source={StaticResource DialogButtonValues}}"
                                   SelectedItem="{Binding SelectedButton}"/>
+
+                        <ComboBox controls:TextBoxHelper.Watermark="Dialog horizontal alignment"
+                                  ItemsSource="{Binding Source={StaticResource HorizontalAlignmentValues}}"
+                                  SelectedItem="{Binding HorizontalAlignment}" />
+
+                        <ComboBox controls:TextBoxHelper.Watermark="Dialog vertical alignment"
+                                  ItemsSource="{Binding Source={StaticResource VerticalAlignmentValues}}"
+                                  SelectedItem="{Binding VerticalAlignment}" />
+
+                        <TextBox controls:TextBoxHelper.Watermark="Margin"
+                                 Text="{Binding Margin}" />
 
                         <ComboBox controls:TextBoxHelper.Watermark="Message severity"
                                   Visibility="{Binding IsCreatingMessageDialog, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
