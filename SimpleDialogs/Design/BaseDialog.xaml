@@ -150,6 +150,9 @@
         <Setter Property="Margin"
                 Value="10" />
 
+        <Setter Property="MinWidth"
+                Value="500" />
+
         <Setter Property="BorderBrush"
                 Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
 
