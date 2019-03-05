@@ -50,25 +50,25 @@ Then just add one of the following `Resource Dictionary`
 ## :camera: Screenshots
   
 #### Progress dialogs
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialogs.gif?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialogs.gif?raw=true=703x378)
 
 #### Information dialog
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InformationDialog.png?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InformationDialog.png?raw=true =703x378)
  
 #### Success dialog
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/SuccessDialog.png?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/SuccessDialog.png?raw=true =703x378)
   
 #### Warning dialog
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/WarningDialog.png?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/WarningDialog.png?raw=true =703x378)
   
 #### Error dialog
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ErrorDialog.png?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ErrorDialog.png?raw=true =703x378)
   
 #### Critical error dialog
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/CriticalDialog.png?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/CriticalDialog.png?raw=true =703x378)
 
 #### Input dialog
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InputDialog.png?raw=true)
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InputDialog.png?raw=true =703x378)
 
 #### Demo application
 ![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/Demo.gif?raw=true)
