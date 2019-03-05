@@ -176,8 +176,9 @@
 
     <Grid>
         <Grid>
-            <StackPanel VerticalAlignment="Center"
+            <StackPanel VerticalAlignment="Top"
                         HorizontalAlignment="Center"
+                        Margin="10"
                         Orientation="Vertical">
                 <Image Width="100"
                        Height="100"

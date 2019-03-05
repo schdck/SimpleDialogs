@@ -25,9 +25,9 @@ namespace SimpleDialogs.Demo.ViewModel
         public MessageSeverity? SelectedSeverity { get; set; }
         public DialogButton? SelectedButton { get; set; }
 
-        public HorizontalAlignment HorizontalAlignment { get; set; }
-        public VerticalAlignment VerticalAlignment { get; set; }
-        public Thickness Margin { get; set; }
+        public HorizontalAlignment? HorizontalAlignment { get; set; }
+        public VerticalAlignment? VerticalAlignment { get; set; }
+        public Thickness? Margin { get; set; }
 
         public int? SecondsToAutoClose { get; set; }
         public bool ShowOverlay { get; set; } = true;
@@ -225,9 +225,9 @@ namespace SimpleDialogs.Demo.ViewModel
                 dialog.SecondButtonContent = SecondButtonContent;
                 dialog.ThirdButtonContent = ThirdButtonContent;
 
-                dialog.HorizontalAlignment = HorizontalAlignment;
-                dialog.VerticalAlignment = VerticalAlignment;
-                dialog.Margin = Margin;
+                dialog.HorizontalAlignment = HorizontalAlignment ?? System.Windows.HorizontalAlignment.Center;
+                dialog.VerticalAlignment = VerticalAlignment ?? System.Windows.VerticalAlignment.Center;
+                dialog.Margin = Margin ?? new Thickness(5);
 
                 dialog.Closed += DialogClosed;
                 dialog.ButtonClicked += DialogButtonClicked;

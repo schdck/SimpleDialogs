@@ -49,9 +49,12 @@ Then just add one of the following `Resource Dictionary`
 
 ## :camera: Screenshots
   
-#### Progress dialogs
-![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialogs.gif?raw=true)
+#### Demo application
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/Demo.gif?raw=true)
   
+#### Progress dialogs
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/ProgressDialgos.gif?raw=true)
+
 #### Information dialog
 ![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InformationDialog.png?raw=true)
  
@@ -66,3 +69,6 @@ Then just add one of the following `Resource Dictionary`
   
 #### Critical error dialog
 ![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/CriticalDialog.png?raw=true)
+
+#### Input dialog
+![](https://github.com/schdck/SimpleDialogs/blob/master/Docs/Screenshots/InputDialog.png?raw=true)
