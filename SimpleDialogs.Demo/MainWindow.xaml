@@ -1,72 +1,179 @@
-﻿<Window x:Class="SimpleDialogs.Demo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:enums="clr-namespace:SimpleDialogs.Demo.Enumerators"
-        xmlns:dialogs="clr-namespace:SimpleDialogs.Controls;assembly=SimpleDialogs"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        mc:Ignorable="d"
-        Title="DEMO - SimpleDialogs"
-        Height="400"
-        Width="800"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+﻿<controls:MetroWindow x:Class="SimpleDialogs.Demo.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:dialogs="clr-namespace:SimpleDialogs.Controls;assembly=SimpleDialogs"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:helpers="clr-namespace:SimpleDialogs.Demo.Helpers"
+                      xmlns:enumerators="clr-namespace:SimpleDialogs.Enumerators;assembly=SimpleDialogs"
+                      xmlns:system="clr-namespace:System;assembly=mscorlib"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                      LeftWindowCommandsOverlayBehavior="Never"
+                      mc:Ignorable="d"
+                      Title="DEMO - SimpleDialogs"
+                      Height="400"
+                      Width="800"
+                      DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <controls:MetroWindow.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="Light" />
+            <Setter Property="FontSize"
+                    Value="14" />
+        </Style>
+
+        <ObjectDataProvider x:Key="DialogButtonValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enumerators:DialogButton" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="MessageSeverityValues"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enumerators:MessageSeverity" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </controls:MetroWindow.Resources>
+
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="launch dialog"
+                    Command="{Binding ShowFlyoutCommand}"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout Header="LAUNCH DIALOG"
+                             Position="Left"
+                             IsOpen="{Binding IsFlyoutOpen}"
+                             Theme="Inverse"
+                             Width="400">
+                <ScrollViewer Margin="10" 
+                              Padding="0 0 5 0"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical"
+                                helpers:Spacing.Vertical="5">
+
+                        <ComboBox controls:TextBoxHelper.Watermark="Dialog type"
+                                  SelectedItem="{Binding SelectedType}">
+                            <ComboBox.Items>
+                                <system:String>Message dialog</system:String>
+                                <system:String>Progress dialog</system:String>
+                                <system:String>Input dialog</system:String>
+                            </ComboBox.Items>
+                        </ComboBox>
+
+                        <ComboBox controls:TextBoxHelper.Watermark="Auto focused button"
+                                  ItemsSource="{Binding Source={StaticResource DialogButtonValues}}"
+                                  SelectedItem="{Binding SelectedButton}"/>
+
+                        <ComboBox controls:TextBoxHelper.Watermark="Message severity"
+                                  Visibility="{Binding IsCreatingMessageDialog, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
+                                  ItemsSource="{Binding Source={StaticResource MessageSeverityValues}}"
+                                  SelectedItem="{Binding SelectedSeverity}" />
+
+                        <controls:NumericUpDown controls:TextBoxHelper.Watermark="Seconds until auto close"
+                                                HasDecimals="False"
+                                                HorizontalContentAlignment="Left"
+                                                Minimum="0"
+                                                Value="{Binding SecondsToAutoClose}"/>
+
+                        <CheckBox Content="Show overlay"
+                                  IsChecked="{Binding ShowOverlay}"/>
+                        
+                        <CheckBox Content="Can close"
+                                  IsChecked="{Binding CanClose}"/>
+
+                        <CheckBox Content="Is undefined"
+                                  IsChecked="{Binding IsUndefined}"
+                                  Visibility="{Binding IsCreatingProgressDialog, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"/>
+
+                        <!-- FIRST BUTTON -->
+                        <TextBlock Text="FIRST BUTTON"
+                                   TextAlignment="Center" />
+
+                        <CheckBox Content="Show button"
+                                  IsChecked="{Binding ShowFirstButton}"/>
+
+                        <CheckBox Content="Close on click"
+                                  IsChecked="{Binding CloseOnFirstButton}"/>
+
+                        <TextBox controls:TextBoxHelper.Watermark="Content"
+                                 Text="{Binding FirstButtonContent}"/>
+                        
+                        <!-- SECOND BUTTON -->
+                        <TextBlock Text="SECOND BUTTON"
+                                   TextAlignment="Center" />
+
+                        <CheckBox Content="Show button"
+                                  IsChecked="{Binding ShowSecondButton}" />
+
+                        <CheckBox Content="Close on click"
+                                  IsChecked="{Binding CloseOnSecondButton}" />
+
+                        <TextBox controls:TextBoxHelper.Watermark="Content"
+                                 Text="{Binding SecondButtonContent}" />
+
+                        <!-- THIRD BUTTON -->
+                        <TextBlock Text="THIRD BUTTON"
+                                   TextAlignment="Center" />
+
+                        <CheckBox Content="Show button"
+                                  IsChecked="{Binding ShowThirdButton}" />
+
+                        <CheckBox Content="Close on click"
+                                  IsChecked="{Binding CloseOnThirdButton}" />
+
+                        <TextBox controls:TextBoxHelper.Watermark="Content"
+                                 Text="{Binding ThirdButtonContent}" />
+
+                        <Button Margin="0 10 0 5"
+                                Content="DISPLAY DIALOG"
+                                Command="{Binding ShowDialogCommand}"/>
+
+                        <Button Margin="0 5"
+                                Content="CLOSE CURRENT DIALOG"
+                                Command="{Binding CloseCurrentDialogCommand}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+
     <Grid>
-        <TextBlock Text="{Binding DialogClickedButton, StringFormat='Clicked button: {0}', TargetNullValue='Clicked button: (null)'}"
-                   VerticalAlignment="Top"
-                   Margin="10 5"
-                   HorizontalAlignment="Center"
-                   FontSize="24" />
+        <Grid>
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical">
+                <Image Width="100"
+                       Height="100"
+                       Source="Resources/logo.png" />
 
-        <TextBlock Text="{Binding DialogResult, StringFormat='Dialog result: {0}', TargetNullValue='Dialog result: (null)'}"
-                   VerticalAlignment="Top"
-                   Margin="10 35 10 10"
-                   HorizontalAlignment="Center"
-                   FontSize="24" />
+                <TextBlock Margin="0 5 0 20" 
+                           Text="SimpleDialogs"
+                           FontSize="32" />
 
-        <WrapPanel Orientation="Horizontal"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Bottom"
-                   Width="600"
-                   Margin="30">
-            <WrapPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin"
-                            Value="3" />
-                    <Setter Property="Width"
-                            Value="194" />
-                </Style>
-            </WrapPanel.Resources>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="Last pressed button: " />
+                    <TextBlock Text="{Binding DialogClickedButton, TargetNullValue='null'}" />
+                </StackPanel>
 
-            <Button Content="Progress (defined)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.DefinedProgressDialog}" />
-            <Button Content="Progress (undefined)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.UndefinedProgressDialog}" />
-            <Button Content="Alert (information)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.InformationDialog}" />
-            <Button Content="Alert (success)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.SuccessDialog}" />
-            <Button Content="Alert (warning)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.WarningDialog}" />
-            <Button Content="Alert (error)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.ErrorDialog}" />
-            <Button Content="Alert (critical)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.CriticalDialog}" />
-            <Button Content="Alert (with exception)"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.ExceptionDialog}" />
-            <Button Content="Input dialog"
-                    Command="{Binding ShowDialogCommand}"
-                    CommandParameter="{x:Static enums:DialogStyle.InputDialog}" />
-        </WrapPanel>
-
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="Last dialog result: " />
+                    <TextBlock Text="{Binding DialogResult, TargetNullValue='null'}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        
         <StackPanel VerticalAlignment="Bottom"
                     HorizontalAlignment="Center"
                     Margin="5"
@@ -76,18 +183,20 @@
                        Text="Sourcecode avaliable at " />
 
             <TextBlock VerticalAlignment="Bottom">
-            <Hyperlink x:Name="Hyperlink"
-                       NavigateUri="https://github.com/schdck/SimpleDialogs">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="RequestNavigate">
-                        <i:InvokeCommandAction Command="{Binding OpenLinkCommand}" CommandParameter="{Binding ElementName=Hyperlink, Path=NavigateUri}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                github.com/schdck/SimpleDialogs
-            </Hyperlink>
+                <Hyperlink x:Name="Hyperlink"
+                           Focusable="False"
+                           NavigateUri="https://github.com/schdck/SimpleDialogs">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="RequestNavigate">
+                            <i:InvokeCommandAction Command="{Binding OpenLinkCommand}"
+                                                   CommandParameter="{Binding ElementName=Hyperlink, Path=NavigateUri}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    github.com/schdck/SimpleDialogs
+                </Hyperlink>
             </TextBlock>
         </StackPanel>
 
-        <dialogs:DialogContainer />
+        <dialogs:DialogContainer Grid.Column="2" />
     </Grid>
-</Window>
+</controls:MetroWindow>

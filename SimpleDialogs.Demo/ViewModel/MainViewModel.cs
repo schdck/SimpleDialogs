@@ -1,177 +1,262 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using SimpleDialogs.Controls;
-using SimpleDialogs.Demo.Enumerators;
 using SimpleDialogs.Enumerators;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
-using System.Windows;
+using System.Windows.Input;
 
 namespace SimpleDialogs.Demo.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public RelayCommand<DialogStyle> ShowDialogCommand { get; private set; }
-        public RelayCommand<DialogButton> DialogCloseCommand { get; private set; }
-        public RelayCommand<Uri> OpenLinkCommand { get; private set; }
-
-        public string DialogClickedButton { get; private set; }
         public string DialogResult { get; private set; }
+        public string DialogClickedButton { get; private set; }
+
+        public bool IsFlyoutOpen { get; private set; } = true;
+        public bool IsCreatingMessageDialog => SelectedType?.ToLower() == "message dialog";
+        public bool IsCreatingProgressDialog => SelectedType?.ToLower() == "progress dialog";
+        public bool IsCreatingInputDialog => SelectedType?.ToLower() == "input dialog";
+
+        public string SelectedType { get; set; }
+        public MessageSeverity? SelectedSeverity { get; set; }
+        public DialogButton? SelectedButton { get; set; }
+
+        public int? SecondsToAutoClose { get; set; }
+        public bool ShowOverlay { get; set; } = true;
+        public bool CanClose { get; set; } = true;
+        public bool IsUndefined { get; set; }
+
+        public bool ShowFirstButton { get; set; } = true;
+        public bool ShowSecondButton { get; set; }
+        public bool ShowThirdButton { get; set; }
+
+        public bool CloseOnFirstButton { get; set; } = true;
+        public bool CloseOnSecondButton { get; set; } = true;
+        public bool CloseOnThirdButton { get; set; } = true;
+
+        public string FirstButtonContent { get; set; } = "OK";
+        public string SecondButtonContent { get; set; }
+        public string ThirdButtonContent { get; set; }
+
+        public ICommand ShowFlyoutCommand { get; private set; }
+        public ICommand ShowDialogCommand { get; private set; }
+        public ICommand CloseCurrentDialogCommand { get; private set; }
+        public ICommand OpenLinkCommand { get; private set; }
+
+        private List<BaseDialog> DialogStack;
+        private MessageDialog ErrorDialog;
 
         public MainViewModel()
         {
+            DialogStack = new List<BaseDialog>();
+
+            ErrorDialog = new MessageDialog()
+            {
+                Title = "ERROR",
+                MessageSeverity = MessageSeverity.Error
+            };
+
+            ShowDialogCommand = new RelayCommand(() =>
+            {
+                ShowDialog();
+
+                IsFlyoutOpen = false;
+            });
+
+            CloseCurrentDialogCommand = new RelayCommand(() =>
+            {
+                if(DialogStack.Count > 0)
+                {
+                    var lastIndex = DialogStack.Count - 1;
+                    var lastDialog = DialogStack[lastIndex];
+
+                    DialogStack.RemoveAt(lastIndex);
+                    DialogManager.CloseDialog(lastDialog);
+                }
+            });
+
             OpenLinkCommand = new RelayCommand<Uri>((uri) =>
             {
                 Process.Start(new ProcessStartInfo(uri.AbsoluteUri));
             });
 
-            ShowDialogCommand = new RelayCommand<DialogStyle>((dialogType) =>
+            ShowFlyoutCommand = new RelayCommand(() =>
             {
-                if (dialogType == DialogStyle.DefinedProgressDialog)
-                {
-                    ProgressDialog dialog = new ProgressDialog()
+                IsFlyoutOpen = true;
+            });
+        }
+
+        private void ShowDialog()
+        {
+            if(SelectedType == null || SelectedButton == null)
+            {
+                ErrorDialog.Message = "Please inform the dialog type and auto focused button";
+
+                DialogManager.ShowDialog(this, ErrorDialog);
+
+                return;
+            }
+
+            BaseDialog dialog = null;
+
+            switch(SelectedType.ToLower())
+            {
+                case "message dialog":
+                    if(SelectedSeverity == null)
                     {
-                        CanClose = false,
-                        Message = "Please wait...",
-                        Title = "Working..."
+                        ErrorDialog.Message = "Please inform the message severity";
+
+                        DialogManager.ShowDialog(this, ErrorDialog);
+
+                        return;
+                    }
+
+                    var messageDialog = new MessageDialog()
+                    {
+                        MessageSeverity = SelectedSeverity.Value,
+                        Title = "Message dialog"
                     };
 
-                    dialog.Closed += DialogClosed;
-
-                    Timer t = new Timer(50);
-
-                    t.Elapsed += (s, e) =>
+                    switch(SelectedSeverity)
                     {
-                        MainWindow.Instance.Dispatcher.Invoke(() =>
+                        case MessageSeverity.Information:
+                            messageDialog.Message = "Move along.\n\nNothing to see here.";
+                            break;
+
+                        case MessageSeverity.Success:
+                            messageDialog.Message = "WE DID IT!!";
+                            messageDialog.FontSize = 14;
+                            break;
+
+                        case MessageSeverity.Warning:
+                            messageDialog.Message = "PLEASE BE CAREFUL (THIS IS A WARNING)";
+                            break;
+
+                        case MessageSeverity.Error:
+                            messageDialog.Message = "Some exception was caught.";
+                            messageDialog.Exception = new Exception("This is some exception that I got for you <3", new Exception("And this is its inner exception"));
+                            break;
+
+                        case MessageSeverity.Critical:
+                            messageDialog.Message = "Something really bad happend, so I'm gona leave a big message here:\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.";
+                            break;
+
+                    } 
+
+                    dialog = messageDialog;
+
+                    break;
+
+                case "progress dialog":
+                    var progressDialog = new ProgressDialog()
+                    {
+                        IsUndefined = IsUndefined,
+                        Title = "PROGRESS DIALOG",
+                        Message = "Working...."
+                    };
+
+                    if(!IsUndefined)
+                    { 
+                        var t = new Timer(50)
                         {
-                            if (dialog.Progress < 100)
+                            AutoReset = false
+                        };
+
+                        t.Elapsed += (s, e) =>
+                        {
+                            MainWindow.Instance.Dispatcher.Invoke(() =>
                             {
-                                dialog.Progress++;
-                                dialog.Title = $"Working... ({dialog.Progress}%)";
-                            }
-                            else
-                            {
-                                dialog.CanClose = true;
-                                dialog.Title = "Done!";
-                                dialog.Message = "I don't know what I was doing, just know that it's finished.";
+                                if (!progressDialog.IsClosed)
+                                {
+                                    if (progressDialog.Progress < 100)
+                                    {
+                                        progressDialog.Progress++;
+                                        progressDialog.Title = $"Working... ({progressDialog.Progress}%)";
+                                        t.Start();
+                                    }
+                                    else
+                                    {
+                                        progressDialog.Title = "Done!";
+                                        progressDialog.Message = "I don't know what I was doing, just know that it's finished.";
+                                    }
+                                }
+                            });
+                        };
 
-                                t.Stop();
-                            }
-                        });
-                    };
+                        t.Start();
+                    }
 
-                    DialogManager.ShowDialog(this, dialog);
+                    dialog = progressDialog;
 
-                    t.Start();
-                }
-                else if (dialogType == DialogStyle.UndefinedProgressDialog)
-                {
-                    var dialog = new ProgressDialog()
-                    {
-                        IsUndefined = true,
-                        Message = "Please wait...",
-                        Title = "Working..."
-                    };
+                    break;
 
-                    dialog.Closed += DialogClosed;
-
-                    DialogManager.ShowDialog(this, dialog);
-                }
-                else if (dialogType == DialogStyle.InputDialog)
-                {
-                    var dialog = new InputDialog()
+                case "input dialog":
+                    var inputDialog = new InputDialog()
                     {
                         Title = "INPUT DIALOG",
                         Description = "Please insert any text you want",
-                        Watermark = "My text lalala",
-                        ShowSecondButton = true
+                        Watermark = "Insert your text here",
                     };
 
-                    dialog.Closed += DialogClosed;
+                    dialog = inputDialog;
 
-                    DialogManager.ShowDialog(this, dialog);
-                }
-                else
+                    break;
+            }
+
+            if(dialog != null)
+            {
+                dialog.ShowOverlay = ShowOverlay;
+                dialog.CanClose = CanClose;
+                dialog.AutoFocusedButton = SelectedButton.Value;
+
+                dialog.ShowFirstButton = ShowFirstButton;
+                dialog.ShowSecondButton = ShowSecondButton;
+                dialog.ShowThirdButton = ShowThirdButton;
+
+                dialog.FirstButtonContent = FirstButtonContent;
+                dialog.SecondButtonContent = SecondButtonContent;
+                dialog.ThirdButtonContent = ThirdButtonContent;
+
+                dialog.Closed += DialogClosed;
+                dialog.ButtonClicked += DialogButtonClicked;
+
+                if(SecondsToAutoClose != null)
                 {
-                    MessageDialog dialog = new MessageDialog()
-                    {
-                        Title = "MESSAGE DIALOG",
-                    };
-
-                    dialog.Closed += DialogClosed;
-                    dialog.ButtonClicked += DialogButtonClicked;
-
-                    switch (dialogType)
-                    {
-                        case DialogStyle.InformationDialog:
-                            dialog.MessageSeverity = MessageSeverity.Information;
-                            dialog.Message = "Move along.\n\nNothing to see here.";
-                            dialog.SecondsToAutoClose = 3;
-                            dialog.ShowSecondButton = true;
-                            dialog.AutoFocusedButton = DialogButton.SecondButton;
-                            break;
-
-                        case DialogStyle.SuccessDialog:
-                            dialog.MessageSeverity = MessageSeverity.Success;
-                            dialog.Message = "WE DID IT!!";
-                            dialog.FontWeight = FontWeights.SemiBold;
-                            dialog.FontSize = 14;
-                            break;
-
-                        case DialogStyle.WarningDialog:
-                            dialog.MessageSeverity = MessageSeverity.Warning;
-                            dialog.Message = "PLEASE BE CAREFUL (THIS IS A WARNING)";
-                            break;
-
-                        case DialogStyle.ErrorDialog:
-                            dialog.MessageSeverity = MessageSeverity.Error;
-                            dialog.ShowSecondButton = true;
-                            dialog.ShowThirdButton = true;
-                            dialog.FirstButtonContent = "YES";
-                            dialog.SecondButtonContent = "NO";
-                            dialog.ThirdButtonContent = "COPY DETAILS";
-                            dialog.Message = "You can also confirm something while displaying an alert or message dialog... Got it?";
-                            break;
-
-                        case DialogStyle.CriticalDialog:
-                            dialog.MessageSeverity = MessageSeverity.Critical;
-                            dialog.Message = "Something really bad happend, so I'm gona leave a big message here:\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.\n\nLorem ipsum dolor sit amet, vim melius doctus at. An modo movet vituperata eos, sit id doming noster. Quo quando putent et, mei in verterem adolescens. No dolore nemore referrentur pro, per mollis patrioque at. Saepe volumus petentium ei vel.";
-                            break;
-
-                        case DialogStyle.ExceptionDialog:
-                            dialog.MessageSeverity = MessageSeverity.Warning;
-                            dialog.Message = "Some exception was caught. The details are contained in the clipboard after 'CopyToClipboard' button is clicked.";
-                            dialog.ShowThirdButton = true;
-                            dialog.ThirdButtonContent = "COPY DETAILS";
-                            dialog.Exception = new Exception("This is some exception that I got for you <3", new Exception("And this is its inner exception <3 <3"));
-                            break;
-                    }
-
-                    DialogManager.ShowDialog(this, dialog);
+                    dialog.SecondsToAutoClose = SecondsToAutoClose.Value;
                 }
-            });
+
+                DialogStack.Add(dialog);
+                DialogManager.ShowDialog(this, dialog);
+            }
         }
 
         private void DialogButtonClicked(object sender, DialogButtonClickedEventArgs e)
         {
-            // Since the only third button we have in this demo is to copy to clipboard
-            // We will prevent the dialog from closing when the user select this option
-            if(e.Button == DialogButton.ThirdButton && sender is MessageDialog dialog)
+            if (e.Button == DialogButton.FirstButton)
             {
-                Clipboard.SetText($"Title: {dialog.Title}\r\nMessage: {dialog.Message}\r\nException: {(dialog.Exception?.ToString() ?? "null")}");
-
-                e.CloseDialogAfterHandle = false;
+                e.CloseDialogAfterHandle = CloseOnFirstButton;
+            }
+            else if (e.Button == DialogButton.SecondButton)
+            {
+                e.CloseDialogAfterHandle = CloseOnSecondButton;
+            }
+            else if (e.Button == DialogButton.ThirdButton)
+            {
+                e.CloseDialogAfterHandle = CloseOnThirdButton;
             }
         }
 
         private void DialogClosed(object sender, DialogClosedEventArgs e)
         {
-            if(sender is BaseDialog dialog)
+            if (sender is BaseDialog dialog)
             {
+                DialogStack.Remove(dialog);
                 DialogResult = e.Result?.ToString();
 
-                switch(e.ClickedButton)
+                switch (e.ClickedButton)
                 {
                     case DialogButton.FirstButton:
                         DialogClickedButton = $"FirstButton ({dialog.FirstButtonContent})";
