@@ -1,8 +1,9 @@
 ﻿using SimpleDialogs.Enumerators;
+using System;
 
 namespace SimpleDialogs.Controls
 {
-    public class DialogClosedEventArgs
+    public class DialogClosedEventArgs : EventArgs
     {
         public DialogButton ClickedButton { get; }
         public object Result { get; }
