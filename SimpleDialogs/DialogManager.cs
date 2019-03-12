@@ -2,6 +2,7 @@
 using SimpleDialogs.Enumerators;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SimpleDialogs
 {
@@ -19,33 +20,75 @@ namespace SimpleDialogs
             _Listeners.RemoveAll(x => x.Item1 == container);
         }
 
-        public static void ShowDialog(object sender, BaseDialog dialog)
+        public static Task ShowDialogAsync(object sender, BaseDialog dialog)
         {
             var type = sender.GetType();
 
+            DialogContainer genericListener = null,
+                            specificListener = null;
+
             foreach(var listener in _Listeners)
             {
-                if(listener.Item2.IsAssignableFrom(type))
+                if(listener.Item2.Equals(type))
                 {
-                    listener.Item1.DisplayDialog(dialog);
+                    // We found a listener specific for that type, so let's use that
+                    specificListener = listener.Item1;
+                    break;
+                }
+                else if(listener.Item2.IsAssignableFrom(type))
+                {
+                    /* In case we don't find a specific listener, use any that subscribed 
+                     * for a type that is a parent class of the sender 
+                     * 
+                     * For example, if the sender is a Window and we find no one listening
+                     * for that specific type, we could use someone who's listening for an
+                     * UIElement. */
+                    genericListener = listener.Item1;
                 }
             }
+
+            if(specificListener != null)
+            {
+                specificListener.DisplayDialogAsync(dialog);
+
+                return dialog.WaitForLoadAsync();
+            }
+            else if(genericListener != null)
+            {
+                genericListener.DisplayDialogAsync(dialog);
+
+                return dialog.WaitForLoadAsync();
+            }
+
+            return null;
         }
 
-        public static void CloseDialog(BaseDialog dialog)
+        public static Task<DialogClosedEventArgs> ShowDialogForResult(object sender, BaseDialog dialog)
         {
-            CloseDialog(dialog, DialogButton.None);
+            return ShowDialogAsync(sender, dialog)?.ContinueWith(x =>
+            {
+                return dialog.WaitForCloseAsync();
+            }).Unwrap();
         }
 
-        internal static void CloseDialog(BaseDialog dialog, DialogButton result)
+        public static Task CloseDialogAsync(BaseDialog dialog)
         {
+            return CloseDialogAsync(dialog, DialogButton.None);
+        }
+
+        internal static Task CloseDialogAsync(BaseDialog dialog, DialogButton result)
+        {
+            if(dialog.Container == null)
+            {
+                throw new InvalidOperationException("The dialog is not in any container");
+            }
+
             if(dialog.StartToCloseDialog(result))
             {
-                foreach (var listener in _Listeners)
-                {
-                    listener.Item1.RemoveDialog(dialog);
-                }
+                return dialog.Container.RemoveDialogAsync(dialog);
             }
+
+            return null;
         }
     }
 }

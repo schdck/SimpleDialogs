@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -38,33 +39,41 @@ namespace SimpleDialogs.Controls
             DialogManager.Subscribe(this, typeof(object));
         }
 
-        internal void DisplayDialog(BaseDialog dialog)
+        internal Task DisplayDialogAsync(BaseDialog dialog)
         {
-            Dispatcher.Invoke(() =>
+            if(dialog.Container != null && dialog.Container != this)
             {
+                throw new InvalidOperationException("The dialog is already on another container");
+            }
+
+            return Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if(dialog.Container != null)
+                {
+                    // Remove it so we can add it to the last position of the list
+                    _DisplayedDialogs.Remove(dialog);
+                }
+
                 _DisplayedDialogs.Add(dialog);
 
                 CurrentDialog = dialog;
-            });
+                CurrentDialog.Container = this;
+            })).Task;
         }
 
-        internal void RemoveDialog(BaseDialog dialog)
+        internal Task RemoveDialogAsync(BaseDialog dialog)
         {
-            Dispatcher.Invoke(() =>
+            return Dispatcher.BeginInvoke(new Action(() =>
             {
-                for (int i = 0; i < _DisplayedDialogs.Count; i++)
-                {
-                    if (_DisplayedDialogs[i] == dialog)
-                    {
-                        _DisplayedDialogs.RemoveAt(i--);
-                    }
-                }
+                _DisplayedDialogs.Remove(dialog);
 
                 if (dialog == CurrentDialog)
                 {
                     CurrentDialog = _DisplayedDialogs.LastOrDefault();
                 }
-            });
+
+                dialog.Container = null;
+            })).Task;
         }
 
         private static void DisplayDialogsFromTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)

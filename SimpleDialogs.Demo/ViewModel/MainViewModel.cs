@@ -79,7 +79,7 @@ namespace SimpleDialogs.Demo.ViewModel
                     var lastDialog = DialogStack[lastIndex];
 
                     DialogStack.RemoveAt(lastIndex);
-                    DialogManager.CloseDialog(lastDialog);
+                    DialogManager.CloseDialogAsync(lastDialog);
                 }
             });
 
@@ -100,7 +100,7 @@ namespace SimpleDialogs.Demo.ViewModel
             {
                 ErrorDialog.Message = "Please inform the dialog type and auto focused button";
 
-                DialogManager.ShowDialog(this, ErrorDialog);
+                DialogManager.ShowDialogAsync(this, ErrorDialog);
 
                 return;
             }
@@ -114,7 +114,7 @@ namespace SimpleDialogs.Demo.ViewModel
                     {
                         ErrorDialog.Message = "Please inform the message severity";
 
-                        DialogManager.ShowDialog(this, ErrorDialog);
+                        DialogManager.ShowDialogAsync(this, ErrorDialog);
 
                         return;
                     }
@@ -238,7 +238,7 @@ namespace SimpleDialogs.Demo.ViewModel
                 }
 
                 DialogStack.Add(dialog);
-                DialogManager.ShowDialog(this, dialog);
+                DialogManager.ShowDialogAsync(this, dialog);
             }
         }
 

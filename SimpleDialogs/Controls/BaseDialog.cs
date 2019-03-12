@@ -1,6 +1,7 @@
 ﻿using SimpleDialogs.Enumerators;
 using SimpleDialogs.Helpers;
 using System;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,6 +47,8 @@ namespace SimpleDialogs.Controls
         private Button _FirstButton;
         private Button _SecondButton;
         private Button _ThirdButton;
+
+        internal DialogContainer Container { get; set; }
 
         public Brush AlternativeForeground
         {
@@ -220,6 +223,42 @@ namespace SimpleDialogs.Controls
             return false;
         }
 
+        internal Task WaitForLoadAsync()
+        {
+            var taskCompletionSource = new TaskCompletionSource<object>();
+
+            RoutedEventHandler loadHandler = null;
+
+            loadHandler = (sender, args) =>
+            {
+                Loaded -= loadHandler;
+
+                taskCompletionSource.TrySetResult(null);
+            };
+
+            Loaded += loadHandler;
+
+            return taskCompletionSource.Task;
+        }
+
+        internal Task<DialogClosedEventArgs> WaitForCloseAsync()
+        {
+            var taskCompletionSource = new TaskCompletionSource<DialogClosedEventArgs>();
+
+            EventHandler<DialogClosedEventArgs> closeHandler = null;
+
+            closeHandler = (sender, args) =>
+            {
+                Closed -= closeHandler;
+
+                taskCompletionSource.TrySetResult(args);
+            };
+
+            Closed += closeHandler;
+
+            return taskCompletionSource.Task;
+        }
+
         private void HandleLoadedEvent(object sender, EventArgs eargs)
         {
             if(_InitializedButtons == false)
@@ -234,7 +273,7 @@ namespace SimpleDialogs.Controls
                 {
                     if (CanClose)
                     {
-                        DialogManager.CloseDialog(this, DialogButton.FirstButton);
+                        DialogManager.CloseDialogAsync(this, DialogButton.FirstButton);
                     }
                 };
 
@@ -242,7 +281,7 @@ namespace SimpleDialogs.Controls
                 {
                     if (CanClose)
                     {
-                        DialogManager.CloseDialog(this, DialogButton.SecondButton);
+                        DialogManager.CloseDialogAsync(this, DialogButton.SecondButton);
                     }
                 };
 
@@ -250,7 +289,7 @@ namespace SimpleDialogs.Controls
                 {
                     if (CanClose)
                     {
-                        DialogManager.CloseDialog(this, DialogButton.ThirdButton);
+                        DialogManager.CloseDialogAsync(this, DialogButton.ThirdButton);
                     }
                 };
             }
@@ -281,7 +320,7 @@ namespace SimpleDialogs.Controls
                     AutoFocusedButton == DialogButton.None ? 
                         DialogButton.FirstButton : AutoFocusedButton;
 
-                DialogManager.CloseDialog(this, result);
+                DialogManager.CloseDialogAsync(this, result);
             }
             else if (SecondsToAutoClose > 0)
             {
@@ -322,6 +361,7 @@ namespace SimpleDialogs.Controls
             {
                 if(e.Property == AutoFocusedButtonProperty && dialog.IsLoaded)
                 {
+                    // Reset the buttons content in case we changed it with the close countdown
                     dialog._FirstButton.Content = dialog.FirstButtonContent;
                     dialog._SecondButton.Content = dialog.SecondButtonContent;
                     dialog._ThirdButton.Content = dialog.ThirdButtonContent;
