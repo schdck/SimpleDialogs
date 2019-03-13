@@ -28,7 +28,7 @@ namespace SimpleDialogs.Controls
         public static readonly DependencyProperty SecondsToAutoCloseProperty = DependencyProperty.Register(nameof(SecondsToAutoClose), typeof(int), typeof(BaseDialog), new PropertyMetadata(-1, DependencyPropertyChanged));
         public static readonly DependencyProperty ShowOverlayProperty = DependencyProperty.Register(nameof(ShowOverlay), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
         public static readonly DependencyProperty IsClosedProperty = IsClosedPropertyKey.DependencyProperty;
-        public static readonly DependencyProperty CanCloseProperty = DependencyProperty.Register(nameof(CanClose), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
+        public static readonly DependencyProperty CloseOnButtonClickByDefaultProperty = DependencyProperty.Register(nameof(CloseOnButtonClickByDefault), typeof(bool), typeof(BaseDialog), new PropertyMetadata(true));
 
         public static readonly DependencyProperty DialogWidthProperty = DependencyProperty.Register(nameof(DialogWidth), typeof(double), typeof(BaseDialog), new PropertyMetadata(double.NaN));
         public static readonly DependencyProperty DialogHeightProperty = DependencyProperty.Register(nameof(DialogHeight), typeof(double), typeof(BaseDialog), new PropertyMetadata(double.NaN));
@@ -141,12 +141,12 @@ namespace SimpleDialogs.Controls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating if the dialog can be closed
+        /// Gets or sets a value indicating if the dialog should be closed when a button is clicked
         /// </summary>
-        public bool CanClose
+        public bool CloseOnButtonClickByDefault
         {
-            get => (bool)GetValue(CanCloseProperty);
-            set => SetValue(CanCloseProperty, value);
+            get => (bool)GetValue(CloseOnButtonClickByDefaultProperty);
+            set => SetValue(CloseOnButtonClickByDefaultProperty, value);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace SimpleDialogs.Controls
 
                 _FirstButton.Click += (s, e) =>
                 {
-                    if (CanClose)
+                    if (CloseOnButtonClickByDefault)
                     {
                         DialogManager.CloseDialogAsync(this, DialogButton.FirstButton);
                     }
@@ -342,7 +342,7 @@ namespace SimpleDialogs.Controls
 
                 _SecondButton.Click += (s, e) =>
                 {
-                    if (CanClose)
+                    if (CloseOnButtonClickByDefault)
                     {
                         DialogManager.CloseDialogAsync(this, DialogButton.SecondButton);
                     }
@@ -350,7 +350,7 @@ namespace SimpleDialogs.Controls
 
                 _ThirdButton.Click += (s, e) =>
                 {
-                    if (CanClose)
+                    if (CloseOnButtonClickByDefault)
                     {
                         DialogManager.CloseDialogAsync(this, DialogButton.ThirdButton);
                     }

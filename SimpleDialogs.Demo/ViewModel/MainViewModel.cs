@@ -31,7 +31,7 @@ namespace SimpleDialogs.Demo.ViewModel
 
         public int? SecondsToAutoClose { get; set; }
         public bool ShowOverlay { get; set; } = true;
-        public bool CanClose { get; set; } = true;
+        public bool CloseOnButtonClickByDefault { get; set; } = true;
         public bool IsUndefined { get; set; }
 
         public bool ShowFirstButton { get; set; } = true;
@@ -214,7 +214,7 @@ namespace SimpleDialogs.Demo.ViewModel
             if(dialog != null)
             {
                 dialog.ShowOverlay = ShowOverlay;
-                dialog.CanClose = CanClose;
+                dialog.CloseOnButtonClickByDefault = CloseOnButtonClickByDefault;
                 dialog.AutoFocusedButton = SelectedButton.Value;
 
                 dialog.ShowFirstButton = ShowFirstButton;

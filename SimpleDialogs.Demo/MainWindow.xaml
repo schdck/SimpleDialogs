@@ -115,8 +115,8 @@
                         <CheckBox Content="Show overlay"
                                   IsChecked="{Binding ShowOverlay}"/>
                         
-                        <CheckBox Content="Can close"
-                                  IsChecked="{Binding CanClose}"/>
+                        <CheckBox Content="Close dialog when a button is clicked"
+                                  IsChecked="{Binding CloseOnButtonClickByDefault}"/>
 
                         <CheckBox Content="Is undefined"
                                   IsChecked="{Binding IsUndefined}"
