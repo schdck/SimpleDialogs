@@ -20,12 +20,18 @@ namespace SimpleDialogs.Controls
 
         private List<BaseDialog> _DisplayedDialogs;
 
+        /// <summary>
+        /// Gets the current displayed dialog in this container
+        /// </summary>
         public BaseDialog CurrentDialog
         {
             get => (BaseDialog)GetValue(CurrentDialogProperty);
             private set => SetValue(CurrentDialogPropertyKey, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating from which sender type this container should display dialogs
+        /// </summary>
         public Type DisplayDialogsFromType
         {
             get => (Type)GetValue(DisplayDialogsFromTypeProperty);

@@ -10,18 +10,27 @@ namespace SimpleDialogs.Controls
         public static readonly DependencyProperty MessageSeverityProperty = DependencyProperty.Register(nameof(MessageSeverity), typeof(MessageSeverity), typeof(MessageDialog));
         public static readonly DependencyProperty ExceptionProperty = DependencyProperty.Register(nameof(Exception), typeof(Exception), typeof(MessageDialog));
 
+        /// <summary>
+        /// Gets or sets the dialog message
+        /// </summary>
         public string Message
         {
             get => (string)GetValue(MessageProperty);
             set => SetValue(MessageProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the dialog MessageSeverity
+        /// </summary>
         public MessageSeverity MessageSeverity
         {
             get => (MessageSeverity)GetValue(MessageSeverityProperty);
             set => SetValue(MessageSeverityProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the dialog Exception
+        /// </summary>
         public Exception Exception
         {
             get => (Exception)GetValue(ExceptionProperty);

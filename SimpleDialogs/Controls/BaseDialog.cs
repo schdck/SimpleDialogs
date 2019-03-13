@@ -56,120 +56,183 @@ namespace SimpleDialogs.Controls
             set => SetValue(AlternativeForegroundProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title FontSize
+        /// </summary>
         public double TitleFontSize
         {
             get => (double)GetValue(FontSizeProperty);
             set => SetValue(FontSizeProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title FontWeight
+        /// </summary>
         public FontWeight TitleFontWeight
         {
             get => (FontWeight)GetValue(TitleFontWeightProperty);
             set => SetValue(TitleFontWeightProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title FontFamily
+        /// </summary>
         public FontFamily TitleFontFamily
         {
             get => (FontFamily)GetValue(TitleFontFamilyProperty);
             set => SetValue(TitleFontFamilyProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title TextAlignment
+        /// </summary>
         public TextAlignment TitleAlignment
         {
             get => (TextAlignment)GetValue(TitleAlignmentProperty);
             set => SetValue(TitleAlignmentProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title Foreground
+        /// </summary>
         public Brush TitleForeground
         {
             get => (Brush)GetValue(TitleForegroundProperty);
             set => SetValue(TitleForegroundProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the dialog title
+        /// </summary>
         public string Title
         {
             get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the seconds remaining until the dialog auto closes
+        /// </summary>
+        /// <value>
+        /// The seconds until the dialog auto close or zero to disable auto close feature
+        /// </value>
         public int SecondsToAutoClose
         {
             get => (int)GetValue(SecondsToAutoCloseProperty);
             set => SetValue(SecondsToAutoCloseProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the dialog should be shown with an overlay 
+        /// </summary>
         public bool ShowOverlay
         {
             get => (bool)GetValue(ShowOverlayProperty);
             set => SetValue(ShowOverlayProperty, value);
         }
 
+        /// <summary>
+        /// Gets a value indicating if the dialog has been closed
+        /// </summary>
         public bool IsClosed
         {
             get => (bool)GetValue(IsClosedProperty);
             private set => SetValue(IsClosedPropertyKey, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating if the dialog can be closed
+        /// </summary>
         public bool CanClose
         {
             get => (bool)GetValue(CanCloseProperty);
             set => SetValue(CanCloseProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the dialog width
+        /// </summary>
         public double DialogWidth
         {
             get => (double)GetValue(DialogWidthProperty);
             set => SetValue(DialogWidthProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the dialog height
+        /// </summary>
         public double DialogHeight
         {
             get => (double)GetValue(DialogHeightProperty);
             set => SetValue(DialogHeightProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title bar height
+        /// </summary>
         public double TitleBarHeight
         {
             get => (double)GetValue(TitleBarHeightProperty);
             set => SetValue(TitleBarHeightProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the first button of the dialog
+        /// </summary>
         public bool ShowFirstButton
         {
             get => (bool)GetValue(ShowFirstButtonProperty);
             set => SetValue(ShowFirstButtonProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the second button of the dialog
+        /// </summary>
         public bool ShowSecondButton
         {
             get => (bool)GetValue(ShowSecondButtonProperty);
             set => SetValue(ShowSecondButtonProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the third button of the dialog
+        /// </summary>
         public bool ShowThirdButton
         {
             get => (bool)GetValue(ShowThirdButtonProperty);
             set => SetValue(ShowThirdButtonProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the first button content
+        /// </summary>
         public string FirstButtonContent
         {
             get => (string)GetValue(FirstButtonContentProperty);
             set => SetValue(FirstButtonContentProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the second button content
+        /// </summary>
         public string SecondButtonContent
         {
             get => (string)GetValue(SecondButtonContentProperty);
             set => SetValue(SecondButtonContentProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the content of the third dialog button
+        /// </summary>
         public string ThirdButtonContent
         {
             get => (string)GetValue(ThirdButtonContentProperty);
             set => SetValue(ThirdButtonContentProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the button that should be automatically focused when the dialog is open
+        /// </summary>
         public DialogButton AutoFocusedButton
         {
             get => (DialogButton)GetValue(AutoFocusedButtonProperty);

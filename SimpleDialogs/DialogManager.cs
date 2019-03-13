@@ -20,6 +20,12 @@ namespace SimpleDialogs
             _Listeners.RemoveAll(x => x.Item1 == container);
         }
 
+        /// <summary>
+        /// Shows a dialog asynchronously
+        /// </summary>
+        /// <param name="sender">The object that is launching the dialog</param>
+        /// <param name="dialog">The dialog to be shown</param>
+        /// <returns>The task that is used to open the dialog or null if no listener is found</returns>
         public static Task ShowDialogAsync(object sender, BaseDialog dialog)
         {
             var type = sender.GetType();
@@ -63,6 +69,12 @@ namespace SimpleDialogs
             return null;
         }
 
+        /// <summary>
+        /// Shows a dialog and wait for it to close asynchronously
+        /// </summary>
+        /// <param name="sender">The object that is launching the dialog</param>
+        /// <param name="dialog">The dialog to be shown</param>
+        /// <returns>The DialogClosedEventArgs or null if no listener is found</returns>
         public static Task<DialogClosedEventArgs> ShowDialogForResult(object sender, BaseDialog dialog)
         {
             return ShowDialogAsync(sender, dialog)?.ContinueWith(x =>
@@ -71,6 +83,11 @@ namespace SimpleDialogs
             }).Unwrap();
         }
 
+        /// <summary>
+        /// Closes a dialog asynchronously
+        /// </summary>
+        /// <param name="dialog">The dialog to be closed</param>
+        /// <returns>The task used to close the dialog or null if the close is aborted</returns>
         public static Task CloseDialogAsync(BaseDialog dialog)
         {
             return CloseDialogAsync(dialog, DialogButton.None);
