@@ -76,7 +76,7 @@
                       Margin="5">
             <TextBox Margin="0 0 10 0"
                      VerticalAlignment="Center"
-                     TextAlignment="Justify"
+                     TextAlignment="Left"
                      TextWrapping="Wrap"
                      Background="Transparent"
                      BorderThickness="0"
