@@ -63,14 +63,12 @@
                             Style="{StaticResource DialogSquareButtonStyle}"
                             Content="{Binding SecondButtonContent}"
                             Visibility="{Binding ShowSecondButton, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
-                            IsEnabled="{Binding CanClose}"
                             MinWidth="120" />
 
                     <Button x:Name="PART_FirstButton"
                             Margin="5 0"
                             Content="{Binding FirstButtonContent}"
                             Visibility="{Binding ShowFirstButton, Converter={StaticResource BoolToVisibilityAlternativeConverter}}"
-                            IsEnabled="{Binding CanClose}"
                             MinWidth="120">
                         <Button.Style>
                             <Style TargetType="Button"
