@@ -270,22 +270,6 @@ namespace SimpleDialogs.Controls
             Closed?.Invoke(this, new DialogClosedEventArgs(clickedButton, GetResult()));
         }
 
-        protected internal bool StartToCloseDialog(DialogButton clickedButton)
-        {
-            var closingEventArgs = new DialogButtonClickedEventArgs(clickedButton);
-
-            ButtonClicked?.Invoke(this, closingEventArgs);
-
-            if (closingEventArgs.CloseDialogAfterHandle)
-            {
-                CloseDialog(clickedButton);
-
-                return true;
-            }
-            
-            return false;
-        }
-
         internal Task WaitForLoadAsync()
         {
             var taskCompletionSource = new TaskCompletionSource<object>();
@@ -334,7 +318,14 @@ namespace SimpleDialogs.Controls
 
                 _FirstButton.Click += (s, e) =>
                 {
-                    if (CloseOnButtonClickByDefault)
+                    var clickedEventArgs = new DialogButtonClickedEventArgs(DialogButton.FirstButton)
+                    {
+                        CloseDialogAfterHandle = CloseOnButtonClickByDefault
+                    };
+
+                    ButtonClicked?.Invoke(this, clickedEventArgs);
+
+                    if (clickedEventArgs.CloseDialogAfterHandle)
                     {
                         DialogManager.CloseDialogAsync(this, DialogButton.FirstButton);
                     }
@@ -342,7 +333,14 @@ namespace SimpleDialogs.Controls
 
                 _SecondButton.Click += (s, e) =>
                 {
-                    if (CloseOnButtonClickByDefault)
+                    var clickedEventArgs = new DialogButtonClickedEventArgs(DialogButton.SecondButton)
+                    {
+                        CloseDialogAfterHandle = CloseOnButtonClickByDefault
+                    };
+
+                    ButtonClicked?.Invoke(this, clickedEventArgs);
+
+                    if (clickedEventArgs.CloseDialogAfterHandle)
                     {
                         DialogManager.CloseDialogAsync(this, DialogButton.SecondButton);
                     }
@@ -350,7 +348,14 @@ namespace SimpleDialogs.Controls
 
                 _ThirdButton.Click += (s, e) =>
                 {
-                    if (CloseOnButtonClickByDefault)
+                    var clickedEventArgs = new DialogButtonClickedEventArgs(DialogButton.ThirdButton)
+                    {
+                        CloseDialogAfterHandle = CloseOnButtonClickByDefault
+                    };
+
+                    ButtonClicked?.Invoke(this, clickedEventArgs);
+
+                    if (clickedEventArgs.CloseDialogAfterHandle)
                     {
                         DialogManager.CloseDialogAsync(this, DialogButton.ThirdButton);
                     }

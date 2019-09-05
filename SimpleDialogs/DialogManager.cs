@@ -9,10 +9,18 @@ namespace SimpleDialogs
     public static class DialogManager
     {
         private static List<Tuple<DialogContainer, Type>> _Listeners = new List<Tuple<DialogContainer, Type>>();
+        private static List<Tuple<Type, BaseDialog>> _DialogsOnQueue = new List<Tuple<Type, BaseDialog>>();
 
         internal static void Subscribe(DialogContainer container, Type senderType)
         {
             _Listeners.Add(new Tuple<DialogContainer, Type>(container, senderType));
+
+            while(_DialogsOnQueue.Count > 0)
+            {
+                container.DisplayDialogAsync(_DialogsOnQueue[0].Item2);
+
+                _DialogsOnQueue.RemoveAt(0);
+            }
         }
 
         internal static void Unsubscribe(DialogContainer container)
@@ -66,6 +74,8 @@ namespace SimpleDialogs
                 return dialog.WaitForLoadAsync();
             }
 
+            _DialogsOnQueue.Add(new Tuple<Type, BaseDialog>(type, dialog));
+
             return null;
         }
 
@@ -100,12 +110,7 @@ namespace SimpleDialogs
                 throw new InvalidOperationException("The dialog is not in any container");
             }
 
-            if(dialog.StartToCloseDialog(result))
-            {
-                return dialog.Container.RemoveDialogAsync(dialog);
-            }
-
-            return null;
+            return dialog.Container.RemoveDialogAsync(dialog);
         }
     }
 }
